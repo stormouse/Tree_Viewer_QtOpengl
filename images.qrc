@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/big.png</file>
+        <file>image/export.png</file>
+        <file>image/new.png</file>
+        <file>image/openfile.png</file>
+        <file>image/redo.png</file>
+        <file>image/savefile.png</file>
+        <file>image/small.png</file>
+        <file>image/undo.png</file>
+    </qresource>
+</RCC>
