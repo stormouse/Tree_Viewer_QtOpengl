@@ -51,7 +51,7 @@ private:
     void fitForBGImage();
 
     double fovy = 60.0;
-    double tany = tan(fovy/2);
+    double tany = tan(fovy*3.1415926/360);
     double z_front = 0.1;
     double z_back = 150.0;
     double kx;

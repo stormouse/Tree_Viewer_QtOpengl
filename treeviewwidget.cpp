@@ -70,6 +70,7 @@ void TreeViewWidget::initializeGL()
     glLoadIdentity();
 
     LoadBGImage("bg1.jpg");
+    AddTree(TreeInfo("perfect","hehuan.obj"));
 }
 
 void TreeViewWidget::paintGL()
@@ -85,17 +86,17 @@ void TreeViewWidget::paintGL()
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, bgTexId);
         glBegin(GL_QUADS);
-            glTexCoord2d(1.0, 1.0);
-            glVertex3d(-bgWidthProj*0.5, -bgHeightProj*0.5, -z_back+0.01);
-
-            glTexCoord2d(0.0, 1.0);
-            glVertex3d(bgWidthProj*0.5, -bgHeightProj*0.5, -z_back+0.01);
-
             glTexCoord2d(0.0, 0.0);
-            glVertex3d(bgWidthProj*0.5, bgHeightProj*0.5, -z_back+0.01);
+            glVertex3d(-bgWidthProj, -bgHeightProj, -z_back+0.01);
 
             glTexCoord2d(1.0, 0.0);
-            glVertex3d(-bgWidthProj*0.5, bgHeightProj*0.5, -z_back+0.01);
+            glVertex3d(bgWidthProj, -bgHeightProj, -z_back+0.01);
+
+            glTexCoord2d(1.0, 1.0);
+            glVertex3d(bgWidthProj, bgHeightProj, -z_back+0.01);
+
+            glTexCoord2d(0.0, 1.0);
+            glVertex3d(-bgWidthProj, bgHeightProj, -z_back+0.01);
         glEnd();
         glDisable(GL_TEXTURE_2D);
     }
@@ -121,11 +122,11 @@ void TreeViewWidget::resizeGL(int width, int height)
 
     ratio = (float)width/(float)height;
 
-    bgHeightProj = tany * z_back * 0.18;
+    bgHeightProj = tany * z_back;
     bgWidthProj = bgHeightProj * ratio;
 
-    kx = 0.18 * tany / (double)width;
-    ky = 0.18 * tany / (double)height;
+    kx = tany * 2 / (double)height;
+    ky = tany * 2 / (double)height;
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -196,7 +197,7 @@ void TreeViewWidget::mousePressEvent(QMouseEvent *e)
     double x = e->x() - width/2;
     double y = height/2 - e->y();
 
-    QVector3D dir(kx*x, ky*y, 1);
+    QVector3D dir(kx*x, ky*y, -1);
 
     QMap<QString, Object*>::const_iterator it;
     Object *most_front = NULL;

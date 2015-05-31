@@ -31,7 +31,8 @@ void MainWindow::on_action_4_triggered()
     QString path = QFileDialog::getOpenFileName(this, tr("Open"), ".", tr("Image Files(*.jpg *.png)"));
 }
 
-void MainWindow::on_action_triggered()
+/*void MainWindow::on_action_triggered()
 {
-    
+
 }
+*/

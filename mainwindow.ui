@@ -28,9 +28,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>0</y>
-      <width>501</width>
-      <height>371</height>
+      <y>20</y>
+      <width>511</width>
+      <height>411</height>
      </rect>
     </property>
    </widget>
@@ -41,7 +41,7 @@
      <x>0</x>
      <y>0</y>
      <width>806</width>
-     <height>30</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
