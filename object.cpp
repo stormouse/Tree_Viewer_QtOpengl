@@ -8,7 +8,7 @@ Object::Object()
     boundingBox = new BoundingBox();
 
     scale = QVector3D(1.0,1.0,1.0);
-    position = QVector3D(0.0,0.0,-50.0);
+    position = QVector3D(0.0,0.0,-10.0);
     eulerAngles = QVector3D(0.0,0.0,0.0);
 
     updateModelViewMatrix();
@@ -107,4 +107,23 @@ void Object::updateModelViewMatrix()
     modelViewMatrix.rotate(eulerAngles.x(), 1.0, 0.0, 0.0);
     modelViewMatrix.rotate(eulerAngles.y(), 0.0, 1.0, 0.0);
     modelViewMatrix.scale(scale);
+}
+
+
+void Object::SetPosition(const QVector3D &v)
+{
+    position = v;
+    updateModelViewMatrix();
+}
+
+void Object::SetEularAngles(const QVector3D &v)
+{
+    eulerAngles = v;
+    updateModelViewMatrix();
+}
+
+void Object::SetScale(const QVector3D &v)
+{
+    scale = v;
+    updateModelViewMatrix();
 }

@@ -17,13 +17,16 @@ TreeViewWidget::~TreeViewWidget()
     delete ui;
 }
 
-void TreeViewWidget::AddTree(const TreeInfo &info)
+void TreeViewWidget::AddTree(const TreeInfo &info, double x, double y)
 {
+    if(x<0) x = width/2;
+    if(y<0) y = height/2;
     Object *obj = new Object();
     QString tname = "TREE" + QString::number(treeCount++);
     if(obj->Load(info))
     {
         obj->setName(tname);
+        obj->SetPosition(QVector3D(10*kx*(x - width/2), 10*ky*(y - height/2), -10.0));
         objectFactory.AddObject(obj);
     }
     else
@@ -70,7 +73,7 @@ void TreeViewWidget::initializeGL()
     glLoadIdentity();
 
     LoadBGImage("bg1.jpg");
-    AddTree(TreeInfo("perfect","hehuan.obj"));
+    AddTree(TreeInfo("perfect","zidingxiang.obj"));
 }
 
 void TreeViewWidget::paintGL()
@@ -106,7 +109,7 @@ void TreeViewWidget::paintGL()
     const QMap<QString, Object*> *list = objectFactory.Factory();
     for(it = list->begin(); it!=list->end(); it++)
     {
-        it.value()->Draw(0);
+        it.value()->Draw(1);
     }
 }
 
