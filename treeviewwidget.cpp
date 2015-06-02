@@ -26,7 +26,7 @@ void TreeViewWidget::AddTree(const TreeInfo &info, double x, double y)
     if(obj->Load(info))
     {
         obj->setName(tname);
-        obj->SetPosition(QVector3D(10*kx*(x - width/2), 10*ky*(y - height/2), -10.0));
+        obj->SetPosition(QVector3D(50*kx*(x - width/2), 50*ky*(y - height/2), -50.0));
         objectFactory.AddObject(obj);
     }
     else
@@ -73,7 +73,13 @@ void TreeViewWidget::initializeGL()
     glLoadIdentity();
 
     LoadBGImage("bg1.jpg");
-    AddTree(TreeInfo("perfect","zidingxiang.obj"));
+    AddTree(TreeInfo("first","try.obj"));
+	AddTree(TreeInfo("second", "try.obj"), 250, 100);
+	AddTree(TreeInfo("third", "try.obj"), 500, 100);
+	
+	TreeFile projetFile;
+	projetFile.CreateDocument("test", &objectFactory);
+	projetFile.CreateXMLFile("testxml");
 }
 
 void TreeViewWidget::paintGL()

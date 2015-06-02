@@ -8,6 +8,7 @@
 #include "objectfactory.h"
 #include "object.h"
 #include "treeinfo.h"
+#include "TreeFile.h"
 #include <QMatrix>
 #include <math.h>
 #include <QImage>
