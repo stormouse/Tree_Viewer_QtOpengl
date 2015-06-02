@@ -208,7 +208,7 @@ void TreeViewWidget::mousePressEvent(QMouseEvent *e)
     {
         if(it.value()->Bounding()->Intersect(it.value()->ModelViewMatrix(), ori, dir))
         {
-            if(most_front == NULL || most_front->Position().z() < it.value()->Position().z())
+            if(most_front == NULL || most_front->GetPosition().z() < it.value()->GetPosition().z())
                 most_front = it.value();
         }
         else

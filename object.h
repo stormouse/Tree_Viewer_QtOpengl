@@ -31,10 +31,15 @@ public:
     QMatrix4x4 ModelViewMatrix() const {return modelViewMatrix;}
     /* global transform */
     void SetPosition(const QVector3D &v);
-    void SetEularAngles(const QVector3D &v);
+    void SetEulerAngles(const QVector3D &v);
     void SetScale(const QVector3D &v);
 
-    QVector3D Position () const { return position; }
+	QVector3D GetPosition() const { return position; }
+	QVector3D GetEulerAngles() const { return eulerAngles; }
+	QVector3D GetScale() const { return scale; }
+	QString GetName() const { return name; }
+	QString GetModelName() const { return modelName; }
+
     void Free();
 private:
 

@@ -116,7 +116,7 @@ void Object::SetPosition(const QVector3D &v)
     updateModelViewMatrix();
 }
 
-void Object::SetEularAngles(const QVector3D &v)
+void Object::SetEulerAngles(const QVector3D &v)
 {
     eulerAngles = v;
     updateModelViewMatrix();
