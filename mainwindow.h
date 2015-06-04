@@ -13,6 +13,10 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    void connectDB();
+    void queryDB();
+    void keyPressEvent(QKeyEvent  *event);
+
     ~MainWindow();
 
 private slots:
