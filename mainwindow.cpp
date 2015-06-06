@@ -6,7 +6,9 @@
 #include<QDebug>
 #include<QSqlTableModel>
 #include<QSqlQuery>
-
+#include<QSqlRecord>
+#include"treeviewwidget.h"
+#include<QObject>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -66,21 +68,71 @@ void MainWindow::queryDB()
 {
     //获取连接名库"test"的连接
     QSqlDatabase db = QSqlDatabase::database("test", false);
-    QSqlQuery query(db);
+    QSqlTableModel *model = new QSqlTableModel(0,db);
+    model->setTable("tree");
+    model->select();
+    ui->tableView->setModel(model);
+   /*QSqlTableModel model;
+
+        model.setTable("tree");
+       // model.setFilter("age > 20 and age < 25");
+        model.select();
+        if (model.select()) {
+            for (int i = 0; i < model.rowCount(); ++i) {
+                QSqlRecord record = model.record(i);
+                QString name = record.value("Name").toString();
+                //int age = record.value("age").toInt();
+                qDebug() << name;
+                qDebug() << "dgdfg";
+            }
+        }*/
+
+
+
+
+    /*QSqlQuery query(db);
     if(query.exec("select * from tree")){
         while(query.next()){
-            qDebug() << query.value(0).toString() << " " << query.value(1).toString();
+            qDebug() << query.value(0).toString() << " " << query.value(1).toString()
+                        << query.value(2).toString() << " " << query.value(3).toString();
         }
-    }
+    }*/
      /*QSqlQueryModel *model = new QSqlQueryModel(ui->tableView);
         model->setQuery(QString("select * from tree;"));
         model->setHeaderData(0,Qt::Horizontal,QObject::tr("ID"));
         model->setHeaderData(1,Qt::Horizontal,QObject::tr("year"));
         model->setHeaderData(2,Qt::Horizontal,QObject::tr("name"));
         ui->tableView->setModel(model);*/
+     //QSplitter *splitter = new QSplitter;
 
 
-    db.close();
+               // ui->listView->setModel(model);
+                    //ui->treeView->setModel(model);
+            //ui->tableView->setModel(model);
+            //model->setSort(1, Qt::AscendingOrder);
+            //model->setHeaderData(1, Qt::Horizontal, "year");
+            //model->setHeaderData(2, Qt::Horizontal, "name");
+
+            //QTableView *view = new QTableView;
+            /*view->setModel(model);
+            view->setSelectionMode(QAbstractItemView::SingleSelection);
+            view->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //        view->setColumnHidden(0, true);
+            view->resizeColumnsToContents();
+            view->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+            QHeaderView *header = view->horizontalHeader();
+            header->setStretchLastSection(true);
+
+            view->show();*/
+            //splitter->show();
+   /* QSqlTableModel model;
+    model.setTable("tree");
+
+    model.select();
+    ui->tableView->setModel(model);
+*/
+   // db.close();
 
 
 }
