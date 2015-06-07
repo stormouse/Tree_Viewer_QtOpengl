@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include<QSqlTableModel>
 namespace Ui {
 class MainWindow;
 }
@@ -16,7 +16,7 @@ public:
     void connectDB();
     void queryDB();
     void keyPressEvent(QKeyEvent  *event);
-
+    QSqlTableModel *model;
     ~MainWindow();
 
 private slots:
@@ -30,6 +30,8 @@ private slots:
 
     //void on_action_triggered();
 
+
+    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -14,19 +14,29 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //ui->openGLWidget->setFocusPolicy();
+
+    QSqlDatabase db = QSqlDatabase::database("test", false);
+    db = QSqlDatabase::addDatabase("QODBC", "test");
+    db.setDatabaseName("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};FIL={MS Access};DBQ=G:\\test.mdb");
+    if(!db.open()){
+        qDebug() << "Error:";
+    }
+    model = new QSqlTableModel(0,db);
+    model->setTable("tree");
+    model->setSort(0, Qt::AscendingOrder);
+    model->select();
+    model->removeColumns(1,2);
+
+    ui->tableView->setModel(model);
+    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
 }
 
 void MainWindow::keyPressEvent(QKeyEvent  *event)
 {
-
    // ui->openGLWidget->setFocusPolicy(Qt::StrongFocus);
-
-
-   // QMessageBox::information(this, "question", "Yes");
     if(event->key()== Qt::Key_Right)
     {
-        // QMessageBox::information(this, "question", "Yes");
         qDebug() << "right";
     }
     else if(event->key() == Qt::Key_Left)
@@ -41,39 +51,26 @@ void MainWindow::keyPressEvent(QKeyEvent  *event)
     {
         qDebug() << "up";
     }
-
-
-
 }
 
-
-//创建数据库连接
 void MainWindow::connectDB()
 {
-//获取是否存在有数据库连接
    QSqlDatabase db = QSqlDatabase::database("test", false);
-   if(db.isValid())//存在连接直接退出
+   if(db.isValid())
        {
            return;
        }
-      //创建一连接名为"test"的数据库连接
    db = QSqlDatabase::addDatabase("QODBC", "test");
    db.setDatabaseName("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};FIL={MS Access};DBQ=G:\\test.mdb");
    if(!db.open()){
        qDebug() << "Error:";
    }
 }
-//查询数据库数据
 void MainWindow::queryDB()
 {
-    //获取连接名库"test"的连接
-    QSqlDatabase db = QSqlDatabase::database("test", false);
-    QSqlTableModel *model = new QSqlTableModel(0,db);
-    model->setTable("tree");
-    model->select();
-    ui->tableView->setModel(model);
-   /*QSqlTableModel model;
+    //QSqlDatabase db = QSqlDatabase::database("test", false);
 
+   /*QSqlTableModel model;
         model.setTable("tree");
        // model.setFilter("age > 20 and age < 25");
         model.select();
@@ -86,9 +83,6 @@ void MainWindow::queryDB()
                 qDebug() << "dgdfg";
             }
         }*/
-
-
-
 
     /*QSqlQuery query(db);
     if(query.exec("select * from tree")){
@@ -105,8 +99,7 @@ void MainWindow::queryDB()
         ui->tableView->setModel(model);*/
      //QSplitter *splitter = new QSplitter;
 
-
-               // ui->listView->setModel(model);
+    // ui->listView->setModel(model);
                     //ui->treeView->setModel(model);
             //ui->tableView->setModel(model);
             //model->setSort(1, Qt::AscendingOrder);
@@ -123,7 +116,6 @@ void MainWindow::queryDB()
 
             QHeaderView *header = view->horizontalHeader();
             header->setStretchLastSection(true);
-
             view->show();*/
             //splitter->show();
    /* QSqlTableModel model;
@@ -133,8 +125,6 @@ void MainWindow::queryDB()
     ui->tableView->setModel(model);
 */
    // db.close();
-
-
 }
 MainWindow::~MainWindow()
 {
@@ -159,10 +149,21 @@ void MainWindow::on_action_4_triggered()
     QString path = QFileDialog::getOpenFileName(this, tr("Open"), ".", tr("Image Files(*.jpg *.png)"));
 }
 
-/*void MainWindow::on_action_triggered()
+
+
+
+void MainWindow::on_pushButton_clicked()
 {
-
+    QString home = ui->lineEdit->text();
+    if(home == "")
+    {
+        model->setTable("tree");
+        model->removeColumns(1,2);
+        model->select();
+    }
+    else
+    {
+        model->setFilter(QObject::tr("home = '%1'").arg(home));//根据姓名进行筛选
+        model->select();
+    }
 }
-*/
-
-
