@@ -167,3 +167,19 @@ void MainWindow::on_pushButton_clicked()
         model->select();
     }
 }
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+	if (ui->openGLWidget->GetImage() != NULL)
+	{
+		int width = ui->openGLWidget->size().width();
+		int height = ui->openGLWidget->size().height();
+		int img_width = ui->openGLWidget->GetImage()->width();
+		int img_height = ui->openGLWidget->GetImage()->height();
+		if (height*img_width > width*img_height)
+			height = width*img_height / img_width;
+		else
+			width = height*img_width / img_height;
+		ui->openGLWidget->resize(width, height);
+	}
+}

@@ -18,6 +18,7 @@ public:
     void keyPressEvent(QKeyEvent  *event);
     QSqlTableModel *model;
     ~MainWindow();
+	void resizeEvent(QResizeEvent *event);
 
 private slots:
 
