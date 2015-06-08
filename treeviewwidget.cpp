@@ -73,13 +73,15 @@ void TreeViewWidget::initializeGL()
     glLoadIdentity();
 
     LoadBGImage("bg1.jpg");
+	//LoadBGImage("bg2.jpg");
     AddTree(TreeInfo("first","try.obj"));
 	AddTree(TreeInfo("second", "try.obj"), 250, 100);
 	AddTree(TreeInfo("third", "try.obj"), 500, 100);
+
+	//this->setFocusPolicy(Qt::StrongFocus);
 	
-	TreeFile projetFile;
-	projetFile.CreateDocument("test", &objectFactory);
-	projetFile.CreateXMLFile("testxml");
+	//TreeFile projetFile;
+	//projetFile.ReadXMLFile("testxml.xml", &objectFactory, LoadBGImage);
 }
 
 void TreeViewWidget::paintGL()
@@ -152,8 +154,8 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
     switch(e->key())
     {
     case Qt::Key_Left:
-        for(int i=0;i<selectedList.size();i++)
-            selectedList[i]->Translate(QVector3D(-0.5, 0.0, 0.0));
+		for (int i = 0; i<selectedList.size(); i++)
+			selectedList[i]->Translate(QVector3D(-0.5, 0.0, 0.0));
         break;
     case Qt::Key_Right:
         for(int i=0;i<selectedList.size();i++)
@@ -174,6 +176,9 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
     case Qt::Key_E:
         for(int i=0;i<selectedList.size();i++)
             selectedList[i]->Rotate(15, QVector3D(1.0, 0.0, 0.0));
+		break;
+	case Qt::Key_G:
+		LoadBGImage("bg2.jpg");
         break;
 
     case Qt::Key_Control:
@@ -273,6 +278,15 @@ void TreeViewWidget::LoadBGImage(const QString &filepath)
         if(img != NULL)delete img;
         img = new QImage(QGLWidget::convertToGLFormat(*buf));
         fitForBGImage();
+		int width = size().width();
+		int height = size().height();
+		int img_width = img->width();
+		int img_height = img->height();
+		if (height*img_width > width*img_height)
+			height = width*img_height / img_width;
+		else
+			width = height*img_width / img_height;
+		resize(width, height);
 
         if(bgTexId == 0)
             glGenTextures(1, &bgTexId);

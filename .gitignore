@@ -41,3 +41,16 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.obj
+*.tlog
+*.log
+*.exe
+debug/Project1.ilk
+debug/Project1.pdb
+debug/moc_mainwindow.cpp
+debug/moc_treeviewwidget.cpp
+GeneratedFiles/qrc_images.cpp
+GeneratedFiles/ui_mainwindow.h
+GeneratedFiles/ui_treeviewwidget.h
+Project1.opensdf
+x64/Debug/vc120.pdb

@@ -8,7 +8,6 @@
 #include "objectfactory.h"
 #include "object.h"
 #include "treeinfo.h"
-#include "TreeFile.h"
 #include <QMatrix>
 #include <math.h>
 #include <QImage>
@@ -38,6 +37,9 @@ public:
     void Scale(QVector2D vec_wh);
 
     void LoadBGImage(const QString &filepath);
+
+	QVector<Object*>* GetSelectedList(){ return &selectedList; }
+	QImage* GetImage(){ return img; }
 protected:
     // override built-in OpenGL functions
     void initializeGL();

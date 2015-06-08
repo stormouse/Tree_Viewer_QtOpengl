@@ -1,8 +1,12 @@
-#ifndef TREEFILE
+﻿#ifndef TREEFILE
 #define TREEFILE
 
 #include <QDomDocument>
 #include "objectfactory.h"
+#include "treeviewwidget.h"
+#include <exception>
+#include <stdexcept>
+using std::range_error;
 class TreeFile
 {
 private:
@@ -92,7 +96,7 @@ public:
 
 	void CreateXMLFile(QString filename)
 	{
-		QString xmlFileName = filename + ".xml";
+		QString xmlFileName = filename;
 		QFile file(xmlFileName);
 		if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QFile::Text))
 		{
@@ -104,6 +108,147 @@ public:
 		out.setCodec("UTF-8");
 		doc.save(out, 4, QDomNode::EncodingFromTextStream);
 		file.close();
+	}
+
+	void ReadXMLFile(QString filepath, ObjectFactory* trees, TreeViewWidget* widget)
+	{
+		QFile file(filepath);
+		if (!file.open(QFile::ReadOnly | QFile::Text)) {
+			qDebug() << filepath;
+			file.close();
+			return;
+		}
+		QString strError;
+		int errLin = 0, errCol = 0;
+		if (!doc.setContent(&file, false, &strError, &errLin, &errCol)) {
+			qDebug() << "parse file failed at line " << errLin << " column " << errCol << ", error: " << strError << " !";
+			throw range_error("Parse File failed!");
+		}
+		if (doc.isNull())
+		{
+			FileIsBrokenExp();
+		}
+
+		QDomElement root = doc.documentElement();
+		if (root.tagName()!="File")
+		{
+			FileIsBrokenExp();
+		}
+
+		QDomElement background = root.firstChildElement();
+		if (!ElementIsLeagal(background, "background"))
+		{
+			FileIsBrokenExp();
+		}
+		widget->LoadBGImage(background.text());
+		QDomElement forest = background.nextSiblingElement();
+		if (!ElementIsLeagal(forest, "forest"))
+		{
+			FileIsBrokenExp();
+		}
+		
+		QDomElement tree = forest.firstChildElement();
+		while (ElementIsLeagal(tree, "tree"))
+		{
+			QDomElement name = tree.firstChildElement();
+			if (!ElementIsLeagal(name, "name"))
+			{
+				FileIsBrokenExp();
+			}
+			QDomElement modelname = name.nextSiblingElement();
+			if (!ElementIsLeagal(modelname, "modelname"))
+			{
+				FileIsBrokenExp();
+			}
+			QDomElement position = modelname.nextSiblingElement();
+			if (!ElementIsLeagal(position, "position"))
+			{
+				FileIsBrokenExp();
+			}
+			QDomElement px = position.firstChildElement();
+			if (!ElementIsLeagal(px, "x"))
+			{
+				FileIsBrokenExp();
+			}
+			QDomElement py = px.nextSiblingElement();
+			if (!ElementIsLeagal(py, "y"))
+			{
+				FileIsBrokenExp();
+			}
+			QDomElement pz = py.nextSiblingElement();
+			if (!ElementIsLeagal(pz, "z"))
+			{
+				FileIsBrokenExp();
+			}
+			QDomElement angle = position.nextSiblingElement();
+			if (!ElementIsLeagal(angle, "angle"))
+			{
+				FileIsBrokenExp();
+			}
+			QDomElement ax = angle.firstChildElement();
+			if (!ElementIsLeagal(ax, "x"))
+			{
+				FileIsBrokenExp();
+			}
+			QDomElement ay = ax.nextSiblingElement();
+			if (!ElementIsLeagal(ay, "y"))
+			{
+				FileIsBrokenExp();
+			}
+			QDomElement az = ay.nextSiblingElement();
+			if (!ElementIsLeagal(az, "z"))
+			{
+				FileIsBrokenExp();
+			}
+			QDomElement scale = angle.nextSiblingElement();
+			if (!ElementIsLeagal(scale, "scale"))
+			{
+				FileIsBrokenExp();
+			}
+			QDomElement sx = scale.firstChildElement();
+			if (!ElementIsLeagal(sx, "x"))
+			{
+				FileIsBrokenExp();
+			}
+			QDomElement sy = sx.nextSiblingElement();
+			if (!ElementIsLeagal(sy, "y"))
+			{
+				FileIsBrokenExp();
+			}
+			QDomElement sz = sy.nextSiblingElement();
+			if (!ElementIsLeagal(sz, "z"))
+			{
+				FileIsBrokenExp();
+			}
+			Object* obj = new Object();
+			
+			QString path = "try.obj";
+			
+			if (obj->Load(TreeInfo(modelname.text(),path)))
+			{
+				obj->setName(name.text());
+				obj->SetPosition(QVector3D(px.text().toFloat(), py.text().toFloat(), pz.text().toFloat()));
+				obj->SetEulerAngles(QVector3D(ax.text().toFloat(), ay.text().toFloat(), az.text().toFloat()));
+				obj->SetScale(QVector3D(sx.text().toFloat(), sy.text().toFloat(), sz.text().toFloat()));
+				trees->AddObject(obj);
+			}
+			else
+			{
+				qDebug() << "Load Model Failed!";
+				throw range_error("Load Model Failed!");
+			}
+			tree = tree.nextSiblingElement();
+		}
+	}
+	void FileIsBrokenExp()
+	{
+		qDebug() << "File is broken!";
+		throw range_error("File is broken!");
+	}
+
+	bool ElementIsLeagal(QDomElement x, QString s)
+	{
+		return !x.isNull() && x.tagName() == s;
 	}
 };
 
