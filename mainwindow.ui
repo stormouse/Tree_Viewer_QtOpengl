@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>918</width>
+    <width>942</width>
     <height>649</height>
    </rect>
   </property>
@@ -35,7 +35,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>918</width>
+     <width>942</width>
      <height>30</height>
     </rect>
    </property>
@@ -48,20 +48,20 @@
       <string>最近</string>
      </property>
     </widget>
-    <addaction name="action"/>
-    <addaction name="action_2"/>
+    <addaction name="action_new"/>
+    <addaction name="action_open"/>
     <addaction name="menu_4"/>
-    <addaction name="action_3"/>
-    <addaction name="action_4"/>
+    <addaction name="action_save"/>
+    <addaction name="action_output"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
      <string>  编辑  </string>
     </property>
-    <addaction name="action_10"/>
-    <addaction name="action_8"/>
-    <addaction name="action_11"/>
-    <addaction name="action_13"/>
+    <addaction name="action_undo"/>
+    <addaction name="action_paste"/>
+    <addaction name="action_redo"/>
+    <addaction name="action_shrink"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
@@ -79,27 +79,27 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="action"/>
+   <addaction name="action_new"/>
    <addaction name="separator"/>
-   <addaction name="action_2"/>
+   <addaction name="action_open"/>
    <addaction name="separator"/>
-   <addaction name="action_3"/>
+   <addaction name="action_save"/>
    <addaction name="separator"/>
-   <addaction name="action_4"/>
+   <addaction name="action_output"/>
    <addaction name="separator"/>
-   <addaction name="action_10"/>
+   <addaction name="action_undo"/>
    <addaction name="separator"/>
-   <addaction name="action_11"/>
-   <addaction name="separator"/>
-   <addaction name="separator"/>
-   <addaction name="separator"/>
-   <addaction name="action_5"/>
+   <addaction name="action_redo"/>
    <addaction name="separator"/>
    <addaction name="separator"/>
-   <addaction name="action_14"/>
+   <addaction name="separator"/>
+   <addaction name="action_move"/>
    <addaction name="separator"/>
    <addaction name="separator"/>
-   <addaction name="action_15"/>
+   <addaction name="action_rotate"/>
+   <addaction name="separator"/>
+   <addaction name="separator"/>
+   <addaction name="action_zoom"/>
    <addaction name="separator"/>
    <addaction name="separator"/>
    <addaction name="separator"/>
@@ -183,7 +183,7 @@
      <item>
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>   </string>
+        <string/>
        </property>
       </widget>
      </item>
@@ -349,7 +349,7 @@
     </layout>
    </widget>
   </widget>
-  <action name="action">
+  <action name="action_new">
    <property name="icon">
     <iconset resource="images.qrc">
      <normaloff>:/image/new.png</normaloff>:/image/new.png</iconset>
@@ -358,7 +358,7 @@
     <string>新建</string>
    </property>
   </action>
-  <action name="action_2">
+  <action name="action_open">
    <property name="icon">
     <iconset resource="images.qrc">
      <normaloff>:/image/openfile.png</normaloff>:/image/openfile.png</iconset>
@@ -370,7 +370,7 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="action_3">
+  <action name="action_save">
    <property name="icon">
     <iconset resource="images.qrc">
      <normaloff>:/image/savefile.png</normaloff>:/image/savefile.png</iconset>
@@ -382,7 +382,7 @@
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="action_4">
+  <action name="action_output">
    <property name="icon">
     <iconset resource="images.qrc">
      <normaloff>:/image/export.png</normaloff>:/image/export.png</iconset>
@@ -391,7 +391,7 @@
     <string>导出</string>
    </property>
   </action>
-  <action name="action_6">
+  <action name="action_exit">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -399,7 +399,7 @@
     <string>退出</string>
    </property>
   </action>
-  <action name="action_7">
+  <action name="action_copy">
    <property name="text">
     <string>复制</string>
    </property>
@@ -407,7 +407,7 @@
     <string>Ctrl+C</string>
    </property>
   </action>
-  <action name="action_8">
+  <action name="action_paste">
    <property name="text">
     <string>粘贴</string>
    </property>
@@ -415,12 +415,12 @@
     <string>Ctrl+V</string>
    </property>
   </action>
-  <action name="action_9">
+  <action name="action_cut">
    <property name="text">
     <string>剪切</string>
    </property>
   </action>
-  <action name="action_10">
+  <action name="action_undo">
    <property name="checkable">
     <bool>false</bool>
    </property>
@@ -435,7 +435,7 @@
     <string>Ctrl+Z</string>
    </property>
   </action>
-  <action name="action_11">
+  <action name="action_redo">
    <property name="icon">
     <iconset resource="images.qrc">
      <normaloff>:/image/redo.png</normaloff>:/image/redo.png</iconset>
@@ -444,7 +444,7 @@
     <string>恢复</string>
    </property>
   </action>
-  <action name="action_12">
+  <action name="action_enlarge">
    <property name="icon">
     <iconset resource="images.qrc">
      <normaloff>:/image/big.png</normaloff>:/image/big.png</iconset>
@@ -453,7 +453,7 @@
     <string>放大</string>
    </property>
   </action>
-  <action name="action_13">
+  <action name="action_shrink">
    <property name="icon">
     <iconset resource="images.qrc">
      <normaloff>:/image/small.png</normaloff>:/image/small.png</iconset>
@@ -462,17 +462,17 @@
     <string>缩小</string>
    </property>
   </action>
-  <action name="action_5">
+  <action name="action_move">
    <property name="text">
     <string>平移</string>
    </property>
   </action>
-  <action name="action_14">
+  <action name="action_rotate">
    <property name="text">
     <string>旋转</string>
    </property>
   </action>
-  <action name="action_15">
+  <action name="action_zoom">
    <property name="text">
     <string>缩放</string>
    </property>

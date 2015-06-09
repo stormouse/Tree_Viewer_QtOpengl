@@ -135,7 +135,7 @@ MainWindow::~MainWindow()
 
 
 
-void MainWindow::on_action_2_triggered()
+/*void MainWindow::on_action_2_triggered()
 {
     QString path = QFileDialog::getSaveFileName(this,tr("Save"),".",tr("Project File(*.2333)"));
 }
@@ -148,7 +148,7 @@ void MainWindow::on_action_3_triggered()
 void MainWindow::on_action_4_triggered()
 {
     QString path = QFileDialog::getOpenFileName(this, tr("Open"), ".", tr("Image Files(*.jpg *.png)"));
-}
+}*/
 
 
 
