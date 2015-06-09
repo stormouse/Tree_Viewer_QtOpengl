@@ -12,15 +12,49 @@ class TreeFile
 private:
 	QDomDocument doc;
 	QString path;
+	QString otherpath;
+	QString imagepath;
 public:
-	void CreateDocument(QString back_path,ObjectFactory* trees)
+	void SetPath(QString p)
+	{
+		path = p;
+	}
+	QString GetPath()
+	{
+		return path;
+	}
+	void SetOtherPath(QString p)
+	{
+		otherpath = p;
+	}
+	QString GetOtherPath()
+	{
+		return otherpath;
+	}
+	void SetImagePath(QString p)
+	{
+		imagepath = p;
+	}
+	QString GetImagePath()
+	{
+		return imagepath;
+	}
+	TreeFile(QString p, QString ip) :path(p), imagepath(ip)
+	{
+
+	}
+	TreeFile(QString p) :path(p)
+	{
+
+	}
+	void CreateDocument(ObjectFactory* trees)
 	{
 		doc.clear();
 		doc.appendChild(doc.createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\""));
 		QDomElement root = doc.createElement("File");
 		doc.appendChild(root);
 		QDomElement background = doc.createElement("background");
-		QDomText back_text = doc.createTextNode(back_path);
+		QDomText back_text = doc.createTextNode(imagepath);
 		background.appendChild(back_text);
 		root.appendChild(background);
 
@@ -94,9 +128,9 @@ public:
 		root.appendChild(globalsetting);
 	}
 
-	void CreateXMLFile(QString filename)
+	void CreateXMLFile(QString filepath)
 	{
-		QString xmlFileName = filename;
+		QString xmlFileName =  filepath;
 		QFile file(xmlFileName);
 		if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QFile::Text))
 		{
@@ -108,6 +142,11 @@ public:
 		out.setCodec("UTF-8");
 		doc.save(out, 4, QDomNode::EncodingFromTextStream);
 		file.close();
+	}
+
+	void CreateXMLFile()
+	{
+		CreateXMLFile(this->path);
 	}
 
 	void ReadXMLFile(QString filepath, ObjectFactory* trees, TreeViewWidget* widget)

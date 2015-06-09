@@ -40,6 +40,7 @@ public:
 
 	QVector<Object*>* GetSelectedList(){ return &selectedList; }
 	QImage* GetImage(){ return img; }
+	ObjectFactory* GetObjectFactory(){ return &objectFactory; }
 protected:
     // override built-in OpenGL functions
     void initializeGL();

@@ -54,3 +54,5 @@ GeneratedFiles/ui_mainwindow.h
 GeneratedFiles/ui_treeviewwidget.h
 Project1.opensdf
 x64/Debug/vc120.pdb
+*.tga
+*.jpg
