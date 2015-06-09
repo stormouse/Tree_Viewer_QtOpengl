@@ -9,6 +9,7 @@
 #include<QSqlRecord>
 #include"treeviewwidget.h"
 #include<QObject>
+#include<QModelIndex>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -182,4 +183,29 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 			width = height*img_width / img_height;
 		ui->openGLWidget->resize(width, height);
 	}
+}
+
+/*void MainWindow::on_tableView_doubleClicked(const QModelIndex &index)
+{
+
+    qDebug() << index.data().toString();
+    ui->treename->setText();
+}*/
+
+void MainWindow::on_tableView_clicked(const QModelIndex &index)
+{
+    //qDebug() << index.data().toString();
+    //QSqlTableModel model2(ui->tableView);
+    //QSqlDatabase db = QSqlDatabase::database("test", false);
+   /* QSqlQueryModel *model2 = new QSqlQueryModel(ui->tableView);
+    model2->setQuery(QString("select * from tree;"));
+    //model2.setQuery(QString("select * from tree"));
+    int row = ui->tableView->currentIndex().row();
+    QSqlRecord record = model2->record(row);
+    ui->treename->setText(record.value(2).toString());*/
+    int row = ui->tableView->currentIndex().row();
+    //ui->treename->setText();
+    //qDebug() << row;
+
+
 }
