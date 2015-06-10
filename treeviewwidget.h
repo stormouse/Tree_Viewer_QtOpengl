@@ -88,6 +88,7 @@ private:
 
 	OperationStack thestack;
 	Mode mode;
+    bool shiftdown = false;
 };
 
 #endif // TREEVIEWWIDGET_H

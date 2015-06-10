@@ -235,7 +235,8 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 
     case Qt::Key_Control:
         groupSelecting = true; break;
-
+    case Qt::Key_Shift:
+        shiftdown = true; break;
     case Qt::Key_Delete:
         for(int i=0;i<selectedList.size();i++)
         {
@@ -260,6 +261,8 @@ void TreeViewWidget::keyReleaseEvent(QKeyEvent *e)
     {
     case Qt::Key_Control:
         groupSelecting = false; break;
+    case Qt::Key_Shift:
+        shiftdown = false; break;
     }
 }
 
@@ -270,9 +273,6 @@ void TreeViewWidget::mouseMoveEvent(QMouseEvent *e)
 
     mousepos[0] = e->x();
     mousepos[1] = e->y();
-
-
-
 
     switch(mode)
     {
@@ -291,10 +291,21 @@ void TreeViewWidget::mouseMoveEvent(QMouseEvent *e)
         }
         break;
     case Mode::ZOOM:
-        for(int i = 0;i<selectedList.size();i++)
+        if(shiftdown)
         {
-            selectedList[i]->Scale(QVector2D(selectedList[i]->GetScale().x() + dx*0.01,
-                                             selectedList[i]->GetScale().y() - dy*0.01));
+            for(int i = 0;i<selectedList.size();i++)
+            {
+                selectedList[i]->Scale(QVector2D(selectedList[i]->GetScale().x() + dx*0.01,
+                                                 selectedList[i]->GetScale().y() + dx*0.01));
+            }
+        }
+        else
+        {
+            for(int i = 0;i<selectedList.size();i++)
+            {
+                selectedList[i]->Scale(QVector2D(selectedList[i]->GetScale().x() + dx*0.01,
+                                                 selectedList[i]->GetScale().y() - dy*0.01));
+            }
         }
         break;
     }
