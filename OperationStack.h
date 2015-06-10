@@ -63,9 +63,9 @@ public:
 
 	void PushToRedo(ActionNode x)
 	{
-		if (redo.size() >= SIZE)
+		while (redo.size() >= SIZE)
 		{
-			redo.erase(redo.begin(), redo.begin() + redo.size() - SIZE);
+			redo.pop_front();
 		}
 		redo.push_back(x);
 	}
@@ -86,8 +86,23 @@ public:
 	{
 		redo.clear();
 	}
+
+	void ClearUndo()
+	{
+		undo.clear();
+	}
+
+	bool IsUndoEmpty()
+	{
+		return undo.empty();
+	}
+
+	bool IsRedoEmpty()
+	{
+		return redo.empty();
+	}
 public:
-	OperationStack(int size) :SIZE(size){}
+	OperationStack(int size=30) :SIZE(size){}
 };
 
 #endif

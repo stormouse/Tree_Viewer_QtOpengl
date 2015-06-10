@@ -56,6 +56,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     TreeFile *thefile;
+	
 };
 
 #endif // MAINWINDOW_H

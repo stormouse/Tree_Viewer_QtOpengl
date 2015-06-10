@@ -467,6 +467,12 @@
    </property>
   </action>
   <action name="action_move">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="images.qrc">
      <normaloff>:/image/move.png</normaloff>:/image/move.png</iconset>

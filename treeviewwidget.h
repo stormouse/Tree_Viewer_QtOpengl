@@ -11,7 +11,9 @@
 #include <QMatrix>
 #include <math.h>
 #include <QImage>
+#include "OperationStack.h"
 
+enum Mode{ MOVE, ROTATE, ZOOM };
 namespace Ui {
 class TreeViewWidget;
 }
@@ -42,6 +44,9 @@ public:
 	QImage* GetImage(){ return img; }
 	ObjectFactory* GetObjectFactory(){ return &objectFactory; }
     void ClearAllTrees();
+
+	void SetMode(Mode x){ mode = x; }
+	Mode GetMode(){ return mode; }
 protected:
     // override built-in OpenGL functions
     void initializeGL();
@@ -80,6 +85,9 @@ private:
 
     QImage *img;
     GLuint bgTexId = 0;
+
+	OperationStack thestack;
+	Mode mode;
 };
 
 #endif // TREEVIEWWIDGET_H

@@ -151,31 +151,83 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
         AddTree(info);
     }
 
-    switch(e->key())
-    {
-    case Qt::Key_Left:
-		for (int i = 0; i<selectedList.size(); i++)
-			selectedList[i]->Translate(QVector3D(-0.5, 0.0, 0.0));
+	switch (e->key())
+	{
+	case Qt::Key_Left:
+		if (mode == Mode::MOVE)
+		{
+			for (int i = 0; i < selectedList.size(); i++)
+				selectedList[i]->Translate(QVector3D(-0.5, 0.0, 0.0));
+		}
+		else if (mode == Mode::ROTATE)
+		{
+			for (int i = 0; i < selectedList.size(); i++)
+				selectedList[i]->Rotate(-15, QVector3D(0.0, 1.0, 0.0));
+		}
+		else if (mode == Mode::ZOOM)
+		{
+			for (int i = 0; i < selectedList.size(); i++)
+				selectedList[i]->Scale(QVector2D(0.9, 1.0));
+		}
+		break;
+	case Qt::Key_Right:
+		if (mode == Mode::MOVE)
+		{
+			for (int i = 0; i < selectedList.size(); i++)
+				selectedList[i]->Translate(QVector3D(0.5, 0.0, 0.0));
+		}
+		else if (mode == Mode::ROTATE)
+		{
+			for (int i = 0; i < selectedList.size(); i++)
+				selectedList[i]->Rotate(15, QVector3D(0.0, 1.0, 0.0));
+		}
+		else if (mode == Mode::ZOOM)
+		{
+			for (int i = 0; i < selectedList.size(); i++)
+				selectedList[i]->Scale(QVector2D(1.1, 1.0));
+		}
+		break;
+	case Qt::Key_Up:
+		if (mode == Mode::MOVE)
+		{
+			for (int i = 0; i < selectedList.size(); i++)
+				selectedList[i]->Translate(QVector3D(0.0, 0.5, 0.0));
+		}
+		else if (mode == Mode::ROTATE)
+		{
+			for (int i = 0; i < selectedList.size(); i++)
+				selectedList[i]->Rotate(-15, QVector3D(1.0, 0.0, 0.0));
+		}
+		else if (mode == Mode::ZOOM)
+		{
+			for (int i = 0; i < selectedList.size(); i++)
+				selectedList[i]->Scale(QVector2D(1.0, 0.9));
+		}
+		break;
+	case Qt::Key_Down:
+		if (mode == Mode::MOVE)
+		{
+			for (int i = 0; i < selectedList.size(); i++)
+				selectedList[i]->Translate(QVector3D(0.0, -0.5, 0.0));
+		}
+		else if (mode == Mode::ROTATE)
+		{
+			for (int i = 0; i < selectedList.size(); i++)
+				selectedList[i]->Rotate(15, QVector3D(1.0, 0.0, 0.0));
+		}
+		else if (mode == Mode::ZOOM)
+		{
+			for (int i = 0; i < selectedList.size(); i++)
+				selectedList[i]->Scale(QVector2D(1.0, 1.1));
+		}
+		break;
+	case Qt::Key_Comma:
+		for (int i = 0; i < selectedList.size(); i++)
+			selectedList[i]->Translate(QVector3D(0.0, 0.0, -0.5));
         break;
-    case Qt::Key_Right:
-        for(int i=0;i<selectedList.size();i++)
-            selectedList[i]->Translate(QVector3D(0.5, 0.0, 0.0));
-        break;
-    case Qt::Key_Up:
-        for(int i=0;i<selectedList.size();i++)
-            selectedList[i]->Translate(QVector3D(0.0, 0.0, -0.5));
-        break;
-    case Qt::Key_Down:
-        for(int i=0;i<selectedList.size();i++)
-            selectedList[i]->Translate(QVector3D(0.0, 0.0, 0.5));
-        break;
-    case Qt::Key_R:
-        for(int i=0;i<selectedList.size();i++)
-            selectedList[i]->Rotate(15, QVector3D(0.0, 1.0, 0.0));
-        break;
-    case Qt::Key_E:
-        for(int i=0;i<selectedList.size();i++)
-            selectedList[i]->Rotate(15, QVector3D(1.0, 0.0, 0.0));
+	case Qt::Key_Period:
+		for (int i = 0; i < selectedList.size(); i++)
+			selectedList[i]->Translate(QVector3D(0.0, 0.0, 0.5));
 		break;
 	case Qt::Key_G:
 		LoadBGImage("bg2.jpg");
