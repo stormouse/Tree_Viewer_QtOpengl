@@ -271,9 +271,32 @@ void TreeViewWidget::mouseMoveEvent(QMouseEvent *e)
     mousepos[0] = e->x();
     mousepos[1] = e->y();
 
-    for(int i = 0;i<selectedList.length();i++)
+
+
+
+    switch(mode)
     {
-        selectedList[i]->Translate2D(QVector2D(dx, dy), -kx, ky);
+    case Mode::MOVE:
+        for(int i = 0;i<selectedList.size();i++)
+        {
+            selectedList[i]->Translate2D(QVector2D(dx, dy), -kx, ky);
+        }
+        break;
+    case Mode::ROTATE:
+        for(int i = 0;i<selectedList.size();i++)
+        {
+            selectedList[i]->Rotate(dy*0.5, QVector3D(1,0,0));
+            selectedList[i]->Rotate(dx*0.5, QVector3D(0,1,0));
+
+        }
+        break;
+    case Mode::ZOOM:
+        for(int i = 0;i<selectedList.size();i++)
+        {
+            selectedList[i]->Scale(QVector2D(selectedList[i]->GetScale().x() + dx*0.01,
+                                             selectedList[i]->GetScale().y() - dy*0.01));
+        }
+        break;
     }
 
     update();
