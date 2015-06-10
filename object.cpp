@@ -88,6 +88,11 @@ void Object::Translate(const QVector3D &vec)
     updateModelViewMatrix();
 }
 
+void Object::Translate2D(const QVector2D &vec, double kx, double ky)
+{
+    Translate(QVector3D(vec.x()*kx*position.z(), vec.y()*ky*position.z(), 0));
+}
+
 void Object::Scale(const QVector3D &vec)
 {
     scale = vec;

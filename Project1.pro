@@ -13,7 +13,6 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     material.cpp \
     objmodel.cpp \
     model.cpp \
@@ -22,9 +21,10 @@ SOURCES += main.cpp\
     objectfactory.cpp \
     treeinfo.cpp \
     treeviewwidget.cpp \
-    boundingbox.cpp
+    boundingbox.cpp \
+    mainwindow.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     material.h \
     objmodel.h \
     point3d.h \
@@ -34,7 +34,8 @@ HEADERS  += mainwindow.h \
     objectfactory.h \
     treeinfo.h \
     treeviewwidget.h \
-    boundingbox.h
+    boundingbox.h \
+    mainwindow.h
 
 FORMS    += mainwindow.ui \
     treeviewwidget.ui
