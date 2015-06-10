@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QSqlTableModel>
+#include "TreeFile.h"
 namespace Ui {
 class MainWindow;
 }
@@ -18,7 +19,7 @@ public:
     void keyPressEvent(QKeyEvent  *event);
     QSqlTableModel *model;
     ~MainWindow();
-	void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event);
 
 private slots:
 
@@ -44,8 +45,17 @@ private slots:
 
     void on_action_zoom_triggered();
 
+    void on_action_open_triggered();
+
+    void on_action_new_triggered();
+
+    void on_action_save_triggered();
+
+    void on_action_othersave_triggered();
+
 private:
     Ui::MainWindow *ui;
+    TreeFile *thefile;
 };
 
 #endif // MAINWINDOW_H
