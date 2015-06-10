@@ -19,6 +19,7 @@ public:
     void ToggleSelected(bool on);
     void Rotate(float angle, const QVector3D &ref);
     void Translate(const QVector3D &vec);
+    void Translate2D(const QVector2D &vec, double kx, double ky);
     void Scale(const QVector3D &vec);
     void Scale(const QVector2D &vec_wh);
 

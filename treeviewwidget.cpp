@@ -117,7 +117,7 @@ void TreeViewWidget::paintGL()
     const QMap<QString, Object*> *list = objectFactory.Factory();
     for(it = list->begin(); it!=list->end(); it++)
     {
-        it.value()->Draw(1);
+        it.value()->Draw(0);
     }
 }
 
@@ -191,6 +191,12 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
         }
         selectedList.clear();
         break;
+
+    case Qt::Key_X:
+        /*debug*/
+        ClearAllTrees();
+        /*debug*/
+        break;
     }
 
     update();
@@ -205,8 +211,49 @@ void TreeViewWidget::keyReleaseEvent(QKeyEvent *e)
     }
 }
 
+void TreeViewWidget::mouseMoveEvent(QMouseEvent *e)
+{
+    double dx = e->x() - mousepos[0];
+    double dy = e->y() - mousepos[1];
+
+    mousepos[0] = e->x();
+    mousepos[1] = e->y();
+
+    for(int i = 0;i<selectedList.length();i++)
+    {
+        selectedList[i]->Translate2D(QVector2D(dx, dy), -kx, ky);
+    }
+
+    update();
+}
+
+void TreeViewWidget::mouseReleaseEvent(QMouseEvent *e)
+{
+    mousedown = false;
+}
+
+void TreeViewWidget::ClearAllTrees()
+{
+    QVector<QString> list;
+    selectedList.clear();
+    QMap<QString, Object*>::const_iterator it;
+    for(it = objectFactory.Factory()->begin(); it!=objectFactory.Factory()->end();it++)
+    {
+        list<<it.value()->Name();
+    }
+    for(int i=0;i<list.length();i++)
+    {
+        objectFactory.RemoveObject(list[i]);
+    }
+    update();
+}
+
 void TreeViewWidget::mousePressEvent(QMouseEvent *e)
 {
+    mousedown = true;
+    mousepos[0] = e->x();
+    mousepos[1] = e->y();
+
     QVector3D ori(0,0,0);
     double x = e->x() - width/2;
     double y = height/2 - e->y();
@@ -229,8 +276,9 @@ void TreeViewWidget::mousePressEvent(QMouseEvent *e)
                 for(int i=0;i<selectedList.size();i++)
                     if(selectedList[i] == it.value())
                         selectedList.removeAt(i);
+                it.value()->ToggleSelected(false);
             }
-            it.value()->ToggleSelected(false);
+
         }
     }
     if(most_front != NULL)

@@ -41,6 +41,7 @@ public:
 	QVector<Object*>* GetSelectedList(){ return &selectedList; }
 	QImage* GetImage(){ return img; }
 	ObjectFactory* GetObjectFactory(){ return &objectFactory; }
+    void ClearAllTrees();
 protected:
     // override built-in OpenGL functions
     void initializeGL();
@@ -49,7 +50,9 @@ protected:
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);
     bool fullscreen;
+    void mouseReleaseEvent(QMouseEvent *);
     void mousePressEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *e);
 private:
 
     void fitForBGImage();
@@ -64,6 +67,7 @@ private:
     double ratio;
     double bgWidthProj, bgHeightProj;
 
+
     Ui::TreeViewWidget *ui;
     QMatrix4x4 viewMatrix;
     QMatrix4x4 projectionMatrix;
@@ -71,6 +75,8 @@ private:
     QVector<Object*> selectedList;
     int treeCount;
     bool groupSelecting = false;
+    bool mousedown = false;
+    QVector2D mousepos;
 
     QImage *img;
     GLuint bgTexId = 0;
