@@ -209,3 +209,24 @@ void MainWindow::on_tableView_clicked(const QModelIndex &index)
 
 
 }
+
+void MainWindow::on_action_move_triggered()
+{
+    ui->action_move->setIcon(QIcon(":/image/blackmove.png"));
+    ui->action_rotate->setIcon(QIcon(":/image/rotate.png"));
+    ui->action_zoom->setIcon(QIcon(":/image/zoom.png"));
+}
+
+void MainWindow::on_action_rotate_triggered()
+{
+    ui->action_rotate->setIcon(QIcon(":/image/blackrotate.png"));
+    ui->action_move->setIcon(QIcon(":/image/move.png"));
+    ui->action_zoom->setIcon(QIcon(":/image/zoom.png"));
+}
+
+void MainWindow::on_action_zoom_triggered()
+{
+    ui->action_zoom->setIcon(QIcon(":/image/blackzoom.png"));
+    ui->action_move->setIcon(QIcon(":/image/move.png"));
+    ui->action_rotate->setIcon(QIcon(":/image/rotate.png"));
+}

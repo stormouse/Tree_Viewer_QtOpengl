@@ -38,6 +38,12 @@ private slots:
 
     void on_tableView_clicked(const QModelIndex &index);
 
+    void on_action_move_triggered();
+
+    void on_action_rotate_triggered();
+
+    void on_action_zoom_triggered();
+
 private:
     Ui::MainWindow *ui;
 };
