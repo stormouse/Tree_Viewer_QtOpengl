@@ -56,3 +56,8 @@ Project1.opensdf
 x64/Debug/vc120.pdb
 *.tga
 *.jpg
+*.tip
+Project1.sdf
+Project1.sdf
+*.ldb
+*.mdb

@@ -149,11 +149,11 @@ public:
 		CreateXMLFile(this->path);
 	}
 
-	void ReadXMLFile(QString filepath, ObjectFactory* trees, TreeViewWidget* widget)
+	void ReadXMLFile(ObjectFactory* trees, TreeViewWidget* widget)
 	{
-		QFile file(filepath);
+		QFile file(path);
 		if (!file.open(QFile::ReadOnly | QFile::Text)) {
-			qDebug() << filepath;
+			qDebug() << path;
 			file.close();
 			return;
 		}
@@ -179,6 +179,7 @@ public:
 		{
 			FileIsBrokenExp();
 		}
+		imagepath = background.text();
 		widget->LoadBGImage(background.text());
 		QDomElement forest = background.nextSiblingElement();
 		if (!ElementIsLeagal(forest, "forest"))

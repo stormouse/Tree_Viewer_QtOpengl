@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->tableView->setModel(model);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
+	thefile = NULL;
 }
 
 void MainWindow::keyPressEvent(QKeyEvent  *event)
@@ -229,4 +229,28 @@ void MainWindow::on_action_zoom_triggered()
     ui->action_zoom->setIcon(QIcon(":/image/blackzoom.png"));
     ui->action_move->setIcon(QIcon(":/image/move.png"));
     ui->action_rotate->setIcon(QIcon(":/image/rotate.png"));
+}
+
+void MainWindow::on_action_open_triggered()
+{
+	QString path = QFileDialog::getOpenFileName(this, tr("Open"), ".", tr("Project Files(*.tip)"));
+	if (thefile)
+		delete thefile;
+	thefile = new TreeFile(path);
+	thefile->ReadXMLFile(ui->openGLWidget->GetObjectFactory(), ui->openGLWidget);
+}
+
+void MainWindow::on_action_new_triggered()
+{
+
+}
+
+void MainWindow::on_action_save_triggered()
+{
+
+}
+
+void MainWindow::on_action_othersave_triggered()
+{
+
 }
