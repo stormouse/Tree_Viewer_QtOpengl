@@ -19,6 +19,8 @@ public:
     void keyPressEvent(QKeyEvent  *event);
     //QSqlTableModel *model2;
     QStandardItemModel *model;
+    QSqlTableModel *modelsupply;
+    QSqlDatabase db;
     ~MainWindow();
     void resizeEvent(QResizeEvent *event);
 
@@ -58,7 +60,11 @@ private slots:
 
     void on_action_redo_triggered();
 
-    void on_treeView_clicked(const QModelIndex &index);
+    //void on_treeView_clicked(const QModelIndex &index);
+
+    void on_treeView_doubleClicked(const QModelIndex &index);
+
+    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
