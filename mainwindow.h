@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
@@ -17,7 +17,8 @@ public:
     void connectDB();
     void queryDB();
     void keyPressEvent(QKeyEvent  *event);
-    QSqlTableModel *model;
+    //QSqlTableModel *model2;
+    QStandardItemModel *model;
     ~MainWindow();
     void resizeEvent(QResizeEvent *event);
 
@@ -33,11 +34,11 @@ private slots:
     //void on_action_triggered();
 
 
-    void on_pushButton_clicked();
+    //void on_pushButton_clicked();
 
     //void on_tableView_doubleClicked(const QModelIndex &index);
 
-    void on_tableView_clicked(const QModelIndex &index);
+    //void on_tableView_clicked(const QModelIndex &index);
 
     void on_action_move_triggered();
 
@@ -56,6 +57,8 @@ private slots:
     void on_action_undo_triggered();
 
     void on_action_redo_triggered();
+
+    void on_treeView_clicked(const QModelIndex &index);
 
 private:
     Ui::MainWindow *ui;
