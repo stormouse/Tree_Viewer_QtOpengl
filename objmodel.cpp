@@ -152,7 +152,11 @@ bool OBJModel::Load(const QString &filepath)
 
 void OBJModel::readMTL(const QString &filepath)
 {
-    QFile file(filepath);
+	/****************modified******************/
+    QFile file("Model\\"+filepath);
+	/****************modified******************/
+
+
     Material *currentMat = NULL;
     if(!file.open(QIODevice::ReadOnly))
     {
@@ -181,8 +185,13 @@ void OBJModel::readMTL(const QString &filepath)
         }
         else if(id=="map_Kd")
         {
-            QString fp;
-            ts>>fp;
+			/****************modified******************/
+            QString fp = "Model\\";
+            //ts>>fp;
+			QString tmp; ts >> tmp;
+			fp.append(tmp);
+			/****************modified******************/
+
             QImage buf, tex;
             if(!buf.load(fp))
             {
