@@ -47,6 +47,7 @@ public:
 
 	void SetMode(Mode x){ mode = x; }
 	Mode GetMode(){ return mode; }
+	OperationStack* GetStack(){ return &thestack; }
 protected:
     // override built-in OpenGL functions
     void initializeGL();
@@ -89,6 +90,7 @@ private:
 	OperationStack thestack;
 	Mode mode;
     bool shiftdown = false;
+	bool onmove = false;
 };
 
 #endif // TREEVIEWWIDGET_H

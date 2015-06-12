@@ -56,7 +56,7 @@ void MainWindow::keyPressEvent(QKeyEvent  *event)
 
 void MainWindow::connectDB()
 {
-   QSqlDatabase db = QSqlDatabase::database("test", false);
+   /*QSqlDatabase db = QSqlDatabase::database("test", false);
    if(db.isValid())
        {
            return;
@@ -65,7 +65,7 @@ void MainWindow::connectDB()
    db.setDatabaseName("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};FIL={MS Access};DBQ=G:\\test.mdb");
    if(!db.open()){
        qDebug() << "Error:";
-   }
+   }*/
 }
 void MainWindow::queryDB()
 {
@@ -257,6 +257,53 @@ void MainWindow::on_action_save_triggered()
 }
 
 void MainWindow::on_action_othersave_triggered()
+{
+
+}
+
+void MainWindow::on_action_undo_triggered()
+{
+	ActionNode x = ui->openGLWidget->GetStack()->PopFromUndo();
+	switch (x.operation)
+	{
+	case ActionNode::ADD:
+		for (int i = 0; i < x.count(); i++)
+		{
+			//Object* obj = ui->openGLWidget->GetObjectFactory()->FindObjectByName(x.changedTrees[i].name);
+			ui->openGLWidget->GetObjectFactory()->RemoveObject(x.changedTrees[i].name);
+		}
+		break;
+	case ActionNode::REMOVE:
+		for (int i = 0; i < x.count(); i++)
+		{
+			Object* obj = new Object();
+			if (obj->Load(TreeInfo(x.changedTrees[i].info)))
+			{
+				obj->setName(x.changedTrees[i].name);
+				obj->SetPosition(x.changedTrees[i].position);
+				obj->SetEulerAngles(x.changedTrees[i].angle);
+				obj->SetScale(x.changedTrees[i].scale);
+				ui->openGLWidget->GetObjectFactory()->AddObject(obj);
+			}
+		}
+		break;
+	case ActionNode::ALTER:
+		for (int i = 0; i < x.count(); i++)
+		{
+			Object* obj = ui->openGLWidget->GetObjectFactory()->FindObjectByName(x.changedTrees[i].name);
+			obj->SetPosition(x.changedTrees[i].position);
+			obj->SetEulerAngles(x.changedTrees[i].angle);
+			obj->SetScale(x.changedTrees[i].scale);
+		}
+		break;
+	}
+	if (ui->openGLWidget->GetStack()->IsUndoEmpty())
+	{
+		ui->action_undo->setEnabled(false);
+	}
+}
+
+void MainWindow::on_action_redo_triggered()
 {
 
 }

@@ -2,6 +2,7 @@
 #include "ui_treeviewwidget.h"
 
 #include <gl/GLU.h>
+#include "DBManager.h"
 
 TreeViewWidget::TreeViewWidget(QWidget *parent) :
     QOpenGLWidget(parent),
@@ -79,7 +80,6 @@ void TreeViewWidget::initializeGL()
 	AddTree(TreeInfo("third", "try.obj"), 500, 100);
 
 	//this->setFocusPolicy(Qt::StrongFocus);
-	
 	//TreeFile projetFile;
 	//projetFile.ReadXMLFile("testxml.xml", &objectFactory, LoadBGImage);
 }
@@ -145,15 +145,24 @@ void TreeViewWidget::resizeGL(int width, int height)
 
 void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 {
-    if(e->key() == Qt::Key_Z)
-    {
-        TreeInfo info("perfect", "try.obj");
-        AddTree(info);
-    }
-
+	ActionNode x;
+	DBManager manager;
+	manager.ConnectToDB();
 	switch (e->key())
 	{
 	case Qt::Key_Left:
+		if (!onmove && (mode == Mode::MOVE || mode == Mode::ROTATE || mode == Mode::ZOOM))
+		{
+			x.operation = ActionNode::ALTER;
+			for (int i = 0; i < selectedList.size(); i++)
+			{
+				QString path = "Model\\"+manager.FindPathByTreeName(selectedList[i]->GetName());
+				TreeInfo info(selectedList[i]->GetName(), path);
+				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
+			}
+			thestack.PushToUndo(x);
+			onmove = true;
+		}
 		if (mode == Mode::MOVE)
 		{
 			for (int i = 0; i < selectedList.size(); i++)
@@ -171,6 +180,18 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 		}
 		break;
 	case Qt::Key_Right:
+		if (!onmove && (mode == Mode::MOVE || mode == Mode::ROTATE || mode == Mode::ZOOM))
+		{
+			x.operation = ActionNode::ALTER;
+			for (int i = 0; i < selectedList.size(); i++)
+			{
+				QString path = "Model\\" + manager.FindPathByTreeName(selectedList[i]->GetName());
+				TreeInfo info(selectedList[i]->GetName(), path);
+				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
+			}
+			thestack.PushToUndo(x);
+			onmove = true;
+		}
 		if (mode == Mode::MOVE)
 		{
 			for (int i = 0; i < selectedList.size(); i++)
@@ -188,6 +209,18 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 		}
 		break;
 	case Qt::Key_Up:
+		if (!onmove && (mode == Mode::MOVE || mode == Mode::ROTATE || mode == Mode::ZOOM))
+		{
+			x.operation = ActionNode::ALTER;
+			for (int i = 0; i < selectedList.size(); i++)
+			{
+				QString path = "Model\\" + manager.FindPathByTreeName(selectedList[i]->GetName());
+				TreeInfo info(selectedList[i]->GetName(), path);
+				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
+			}
+			thestack.PushToUndo(x);
+			onmove = true;
+		}
 		if (mode == Mode::MOVE)
 		{
 			for (int i = 0; i < selectedList.size(); i++)
@@ -205,6 +238,18 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 		}
 		break;
 	case Qt::Key_Down:
+		if (!onmove && (mode == Mode::MOVE || mode == Mode::ROTATE || mode == Mode::ZOOM))
+		{
+			x.operation = ActionNode::ALTER;
+			for (int i = 0; i < selectedList.size(); i++)
+			{
+				QString path = "Model\\" + manager.FindPathByTreeName(selectedList[i]->GetName());
+				TreeInfo info(selectedList[i]->GetName(), path);
+				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
+			}
+			thestack.PushToUndo(x);
+			onmove = true;
+		}
 		if (mode == Mode::MOVE)
 		{
 			for (int i = 0; i < selectedList.size(); i++)
@@ -222,10 +267,34 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 		}
 		break;
 	case Qt::Key_Comma:
+		if (!onmove && (mode == Mode::MOVE || mode == Mode::ROTATE || mode == Mode::ZOOM))
+		{
+			x.operation = ActionNode::ALTER;
+			for (int i = 0; i < selectedList.size(); i++)
+			{
+				QString path = "Model\\" + manager.FindPathByTreeName(selectedList[i]->GetName());
+				TreeInfo info(selectedList[i]->GetName(), path);
+				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
+			}
+			thestack.PushToUndo(x);
+			onmove = true;
+		}
 		for (int i = 0; i < selectedList.size(); i++)
 			selectedList[i]->Translate(QVector3D(0.0, 0.0, -0.5));
         break;
 	case Qt::Key_Period:
+		if (!onmove && (mode == Mode::MOVE || mode == Mode::ROTATE || mode == Mode::ZOOM))
+		{
+			x.operation = ActionNode::ALTER;
+			for (int i = 0; i < selectedList.size(); i++)
+			{
+				QString path = "Model\\" + manager.FindPathByTreeName(selectedList[i]->GetName());
+				TreeInfo info(selectedList[i]->GetName(), path);
+				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
+			}
+			thestack.PushToUndo(x);
+			onmove = true;
+		}
 		for (int i = 0; i < selectedList.size(); i++)
 			selectedList[i]->Translate(QVector3D(0.0, 0.0, 0.5));
 		break;
@@ -238,10 +307,15 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
     case Qt::Key_Shift:
         shiftdown = true; break;
     case Qt::Key_Delete:
+		x.operation = ActionNode::REMOVE;
         for(int i=0;i<selectedList.size();i++)
         {
+			QString path = "Model\\" + manager.FindPathByTreeName(selectedList[i]->GetName());
+			TreeInfo info(selectedList[i]->GetName(), path);
+			x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
             RemoveTree(selectedList[i]->Name());
         }
+		thestack.PushToUndo(x);
         selectedList.clear();
         break;
 
@@ -257,6 +331,7 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 
 void TreeViewWidget::keyReleaseEvent(QKeyEvent *e)
 {
+	onmove = false;
     switch(e->key())
     {
     case Qt::Key_Control:

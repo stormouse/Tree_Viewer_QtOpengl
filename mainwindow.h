@@ -53,6 +53,10 @@ private slots:
 
     void on_action_othersave_triggered();
 
+    void on_action_undo_triggered();
+
+    void on_action_redo_triggered();
+
 private:
     Ui::MainWindow *ui;
     TreeFile *thefile;

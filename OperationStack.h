@@ -18,6 +18,10 @@ struct TreeNode
 	QVector3D position;
 	QVector3D angle;
 	QVector3D scale;
+	TreeNode(QString na, TreeInfo in, QVector3D p, QVector3D a, QVector3D s)
+		:name(na), info(in), position(p), angle(a), scale(s)
+	{
+	}
 };
 
 struct ActionNode
@@ -39,12 +43,14 @@ private:
 	deque<ActionNode> undo;
 	deque<ActionNode> redo;
 	const int SIZE;
+	bool lock = false;
 public:
 	void PushToUndo(ActionNode x)
 	{
 		while (undo.size() >= SIZE)
 		{
 			undo.pop_front();
+			lock = true;
 		}
 		undo.push_back(x);
 	}
@@ -100,6 +106,11 @@ public:
 	bool IsRedoEmpty()
 	{
 		return redo.empty();
+	}
+
+	bool IsFileChange()
+	{
+		return !(IsUndoEmpty() && !lock);
 	}
 public:
 	OperationStack(int size=30) :SIZE(size){}
