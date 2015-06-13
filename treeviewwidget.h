@@ -48,6 +48,9 @@ public:
 	void SetMode(Mode x){ mode = x; }
 	Mode GetMode(){ return mode; }
 	OperationStack* GetStack(){ return &thestack; }
+	void SetTreeCount(int t){ treeCount = t; }
+	int GetTreeCount(){ return treeCount; }
+	void SaveImageToFile(QString filename);
 protected:
     // override built-in OpenGL functions
     void initializeGL();
@@ -94,6 +97,7 @@ private:
 
 signals:
 	void Pushed();
+	void GiveMsg(QVector3D, QVector3D, QVector2D, QString);
 };
 
 #endif // TREEVIEWWIDGET_H

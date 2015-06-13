@@ -6,6 +6,7 @@
 #include "treeviewwidget.h"
 #include <exception>
 #include <stdexcept>
+#include "DBManager.h"
 using std::range_error;
 class TreeFile
 {
@@ -47,6 +48,7 @@ public:
 	{
 
 	}
+	TreeFile(){}
 	void CreateDocument(ObjectFactory* trees)
 	{
 		doc.clear();
@@ -188,6 +190,7 @@ public:
 		}
 		
 		QDomElement tree = forest.firstChildElement();
+		widget->SetTreeCount(0);
 		while (ElementIsLeagal(tree, "tree"))
 		{
 			QDomElement name = tree.firstChildElement();
@@ -262,11 +265,14 @@ public:
 			}
 			Object* obj = new Object();
 			
-			QString path = "try.obj";
+			DBManager manager;
+			manager.ConnectToDB();
+			QString path = manager.FindPathByTreeName(modelname.text());
 			
 			if (obj->Load(TreeInfo(modelname.text(),path)))
 			{
-				obj->setName(name.text());
+				obj->setName("TREE" + QString::number(widget->GetTreeCount()));
+				widget->SetTreeCount(widget->GetTreeCount() + 1);
 				obj->SetPosition(QVector3D(px.text().toFloat(), py.text().toFloat(), pz.text().toFloat()));
 				obj->SetEulerAngles(QVector3D(ax.text().toFloat(), ay.text().toFloat(), az.text().toFloat()));
 				obj->SetScale(QVector3D(sx.text().toFloat(), sy.text().toFloat(), sz.text().toFloat()));

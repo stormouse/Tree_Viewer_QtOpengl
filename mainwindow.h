@@ -5,6 +5,7 @@
 #include <QSqlTableModel>
 #include "TreeFile.h"
 #include "DBManager.h"
+#include <QVector>
 namespace Ui {
 class MainWindow;
 }
@@ -66,10 +67,16 @@ private slots:
 
     void on_treeView_doubleClicked(const QModelIndex &index);
 
+	void on_new_file(QString imagepath, QString projpath, QString projname);
+
+    void on_action_output_triggered();
+
+	void ButtomDock(QVector3D position, QVector3D angle, QVector2D scale, QString Mname);
+
 private:
     Ui::MainWindow *ui;
-    TreeFile *thefile;
-	
+    TreeFile thefile;
+	QString projname="";
 };
 
 #endif // MAINWINDOW_H

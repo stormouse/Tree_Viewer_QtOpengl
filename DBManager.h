@@ -9,11 +9,24 @@
 #include<QSqlError.h>
 #include<QDir.h>
 #include<QStandardItemModel>
+
 class DBManager
 {
 private:
+	static DBManager *manager;
+	//DBManager(){}
 	QSqlDatabase db;
 public:
+	static DBManager* Instance()
+	{
+		if (manager == NULL)
+		{
+			manager = new DBManager();
+			manager->ConnectToDB();
+		}
+		return manager;
+	}
+
 	bool ConnectToDB()
 	{
 		db = QSqlDatabase::database("test", false);

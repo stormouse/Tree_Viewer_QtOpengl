@@ -3,6 +3,8 @@
 
 #include <gl/GLU.h>
 #include "DBManager.h"
+#include <cmath>
+#include <cstdlib>
 
 TreeViewWidget::TreeViewWidget(QWidget *parent) :
     QOpenGLWidget(parent),
@@ -77,6 +79,7 @@ void TreeViewWidget::initializeGL()
 
     LoadBGImage("bg1.jpg");
 	//LoadBGImage("bg2.jpg");
+
 	DBManager manager;
 	manager.ConnectToDB();
 	qDebug() << manager.FindPathByTreeName("lilac");
@@ -412,7 +415,6 @@ void TreeViewWidget::mouseMoveEvent(QMouseEvent *e)
         }
         break;
     }
-
     update();
 }
 
@@ -420,6 +422,11 @@ void TreeViewWidget::mouseReleaseEvent(QMouseEvent *e)
 {
     mousedown = false;
 	onmove = false;
+	if (selectedList.size()>0)
+	{
+		Object *most_front = selectedList[selectedList.size() - 1];
+		emit GiveMsg(most_front->GetPosition(), most_front->GetEulerAngles(), QVector2D(most_front->GetScale().x(), most_front->GetScale().y()), most_front->GetModelName());
+	}
 }
 
 void TreeViewWidget::ClearAllTrees()
@@ -477,7 +484,8 @@ void TreeViewWidget::mousePressEvent(QMouseEvent *e)
         {
             if(groupSelecting)
             {
-                most_front->ToggleSelected(true);
+				emit GiveMsg(most_front->GetPosition(), most_front->GetEulerAngles(), QVector2D(most_front->GetScale().x(), most_front->GetScale().y()), most_front->GetModelName());
+				most_front->ToggleSelected(true);
                 selectedList.append(most_front);
             }
             else
@@ -488,6 +496,7 @@ void TreeViewWidget::mousePressEvent(QMouseEvent *e)
                 }
                 selectedList.clear();
                 selectedList.append(most_front);
+				emit GiveMsg(most_front->GetPosition(), most_front->GetEulerAngles(), QVector2D(most_front->GetScale().x(), most_front->GetScale().y()), most_front->GetModelName());
                 most_front->ToggleSelected(true);
             }
         }
@@ -549,4 +558,29 @@ void TreeViewWidget::fitForBGImage()
         h/=2;
     }
     resizeGL(w,h);
+}
+
+void TreeViewWidget::SaveImageToFile(QString filename)
+{
+	int _w = static_cast<int>(ceil(width));
+	int _h = static_cast<int>(ceil(height));
+	while (_w % 4 != 0)_w++;
+	while (_h % 4 != 0)_h++;
+
+	GLubyte *buf = new GLubyte[_w * _h * 4];
+
+	int x = this->mapToParent(this->geometry().topLeft()).x();
+	int y = this->mapToParent(this->geometry().topLeft()).y();
+
+	glReadPixels(x, y+height/2, width, height, GL_BGRA, GL_UNSIGNED_BYTE, buf);
+
+	QImage image(buf, width, height, QImage::Format_ARGB32);
+
+	//flip the image.
+	QMatrix matrix;
+	matrix.scale(1, -1);
+	image = image.transformed(matrix);
+	image.save(filename, "JPG");
+
+	delete buf;
 }

@@ -14,6 +14,8 @@
 #include<DBManager.h>
 #include<newfrom.h>
 #include<QTextCodec>
+#include<QVector>
+#include<QObject>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -61,9 +63,6 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     ui->treeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->treeView->setModel(model);
-
-
-	thefile = NULL;
 	
 	//set default mode
 	ui->action_move->setIcon(QIcon(":/image/blackmove.png"));
@@ -76,6 +75,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->action_redo->setEnabled(false);
 
 	connect(ui->openGLWidget, SIGNAL(Pushed()), this, SLOT(on_pushed()));
+	connect(ui->openGLWidget, SIGNAL(GiveMsg(QVector3D, QVector3D, QVector2D, QString)),
+		this, SLOT(ButtomDock(QVector3D, QVector3D, QVector2D, QString)), Qt::QueuedConnection);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent  *event)
@@ -175,6 +176,8 @@ void MainWindow::queryDB()
 MainWindow::~MainWindow()
 {
     delete ui;
+	/*if (from)
+		delete from;*/
 }
 
 
@@ -269,26 +272,32 @@ void MainWindow::on_action_zoom_triggered()
 void MainWindow::on_action_open_triggered()
 {
 	QString path = QFileDialog::getOpenFileName(this, tr("Open"), ".", tr("Project Files(*.tip)"));
-	if (thefile)
-		delete thefile;
-	thefile = new TreeFile(path);
-	thefile->ReadXMLFile(ui->openGLWidget->GetObjectFactory(), ui->openGLWidget);
+	ui->openGLWidget->ClearAllTrees();
+	thefile.SetPath(path);
+	thefile.ReadXMLFile(ui->openGLWidget->GetObjectFactory(), ui->openGLWidget);
 }
 
 void MainWindow::on_action_new_triggered()
 {
-    NewFrom *from = new NewFrom();
+    NewFrom* from = new NewFrom();
+	from->setWindowFlags(windowFlags() &~Qt::WindowMinMaxButtonsHint);//取消窗口最小化功能
+	from->setWindowModality(Qt::ApplicationModal);
+	from->setAttribute(Qt::WA_ShowModal, true);
+	connect(from, SIGNAL(return_string(QString, QString, QString)), this, SLOT(on_new_file(QString, QString, QString)));
     from->show();
 }
 
 void MainWindow::on_action_save_triggered()
 {
-
+	thefile.CreateDocument(ui->openGLWidget->GetObjectFactory());
+	thefile.CreateXMLFile();
 }
 
 void MainWindow::on_action_othersave_triggered()
 {
-
+	QString path = QFileDialog::getSaveFileName(this, tr("Save As..."), ".", tr("Project Files(*.tip)"));
+	thefile.CreateDocument(ui->openGLWidget->GetObjectFactory());
+	thefile.CreateXMLFile(path);
 }
 
 void MainWindow::on_action_undo_triggered()
@@ -450,4 +459,96 @@ void MainWindow::on_treeView_doubleClicked(const QModelIndex &index)
 	Object* obj = ui->openGLWidget->GetObjectFactory()->FindObjectByName(name);
 	x.changedTrees.push_back(TreeNode(name, TreeInfo(Modelname, Modelpath), obj->GetPosition(), obj->GetEulerAngles(), obj->GetScale()));
 	ui->openGLWidget->GetStack()->PushToUndo(x);
+}
+
+void MainWindow::on_new_file(QString imagepath, QString projpath, QString projname)
+{
+	QTextCodec* code = QTextCodec::codecForName("GB2312");
+	thefile.SetImagePath(imagepath);
+	thefile.SetPath(projpath + "\\" + projname + ".tip");
+	this->projname = projname;
+	this->setWindowTitle(code->toUnicode("项目 - ")+projname);
+	ui->openGLWidget->LoadBGImage(imagepath);
+}
+void MainWindow::on_action_output_triggered()
+{
+	QString path = QFileDialog::getSaveFileName(this, tr("Export"), ".", tr("Image Files(*.jpg)"));
+	ui->openGLWidget->SaveImageToFile(path);
+}
+
+void MainWindow::ButtomDock(QVector3D position, QVector3D angle, QVector2D scale, QString Mname)
+{
+
+	ui->p1->setText(QString("%1").arg(position.x()));
+	ui->p2->setText(QString("%1").arg(position.y()));
+	ui->p3->setText(QString("%1").arg(position.z()));
+
+	ui->a1->setText(QString("%1").arg(angle.x()));
+	ui->a2->setText(QString("%1").arg(angle.y()));
+	ui->a3->setText(QString("%1").arg(angle.z()));
+
+	ui->s1->setText(QString("%1").arg(scale.x()));
+	ui->s2->setText(QString("%1").arg(scale.y()));
+
+	DBManager flag;
+	flag.ConnectToDB();
+
+
+	QString thpath = flag.FindTHpathByMname(Mname);
+	QString tname = flag.FindTnameByMname(Mname);
+
+	ui->treename->setText(tname);
+	QImage *image = new QImage();
+	if (thpath != "")
+	{
+		//ui->select->setText(thpath);
+		if (image->load(thpath))
+		{
+			ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+			ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+			QGraphicsScene *scene = new QGraphicsScene;
+			QPixmap map = QPixmap::fromImage(*image);
+
+			QPixmap sized = map.scaled(
+				QSize(ui->graphicsView->width(),
+				ui->graphicsView->height()),
+				Qt::KeepAspectRatio);
+			scene->addPixmap(sized);
+			ui->graphicsView->setScene(scene);
+			ui->graphicsView->show();
+		}
+	}
+	
+	QTextCodec*code = QTextCodec::codecForName("GB2312");
+	QSqlTableModel* im = flag.infomodel(tname);
+
+	QStandardItemModel *mo = new QStandardItemModel();
+	mo->setHorizontalHeaderItem(0, new QStandardItem(code->toUnicode("树名")));
+	mo->setHorizontalHeaderItem(1, new QStandardItem(code->toUnicode("种类")));
+	mo->setHorizontalHeaderItem(2, new QStandardItem(code->toUnicode("温度带")));
+	mo->setHorizontalHeaderItem(3, new QStandardItem(code->toUnicode("气候")));
+	mo->setHorizontalHeaderItem(4, new QStandardItem(code->toUnicode("光性")));
+	mo->setHorizontalHeaderItem(5, new QStandardItem(code->toUnicode("空气")));
+	mo->setHorizontalHeaderItem(6, new QStandardItem(code->toUnicode("土壤条件")));
+	mo->setHorizontalHeaderItem(7, new QStandardItem(code->toUnicode("观赏性")));
+	int k = 8;
+	for (int i = 0; i < k; i++)
+	{
+		if (!(im->record(0).value(i).isNull()))
+		{
+			QString hor = im->record(0).value(i).toString();
+			mo->setItem(0, i, new QStandardItem(hor));
+
+		}
+		else
+		{
+			mo->removeColumn(i);
+			k--;
+			i--;
+		}
+
+	}
+	ui->infotableView->setModel(mo);
+	ui->infotableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
