@@ -110,7 +110,7 @@
    <property name="minimumSize">
     <size>
      <width>282</width>
-     <height>205</height>
+     <height>321</height>
     </size>
    </property>
    <property name="maximumSize">
@@ -163,7 +163,7 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>748</width>
+     <width>750</width>
      <height>187</height>
     </size>
    </property>
@@ -182,13 +182,16 @@
    <widget class="QWidget" name="dockWidgetContents_6">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QGraphicsView" name="graphicsView">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="maximumSize">
           <size>
-           <width>99</width>
-           <height>102</height>
+           <width>101</width>
+           <height>101</height>
           </size>
          </property>
         </widget>
@@ -209,6 +212,12 @@
          </property>
          <property name="text">
           <string>TextLabel</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::AutoText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -236,7 +245,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QTextBrowser" name="textBrowser">
+        <widget class="QTextBrowser" name="p1">
          <property name="maximumSize">
           <size>
            <width>61</width>
@@ -246,7 +255,7 @@
         </widget>
        </item>
        <item row="0" column="2">
-        <widget class="QTextBrowser" name="textBrowser_2">
+        <widget class="QTextBrowser" name="p2">
          <property name="maximumSize">
           <size>
            <width>61</width>
@@ -256,7 +265,7 @@
         </widget>
        </item>
        <item row="0" column="3">
-        <widget class="QTextBrowser" name="textBrowser_3">
+        <widget class="QTextBrowser" name="p3">
          <property name="maximumSize">
           <size>
            <width>61</width>
@@ -273,7 +282,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QTextBrowser" name="textBrowser_4">
+        <widget class="QTextBrowser" name="a1">
          <property name="maximumSize">
           <size>
            <width>61</width>
@@ -283,7 +292,7 @@
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QTextBrowser" name="textBrowser_5">
+        <widget class="QTextBrowser" name="a2">
          <property name="maximumSize">
           <size>
            <width>61</width>
@@ -293,7 +302,7 @@
         </widget>
        </item>
        <item row="1" column="3">
-        <widget class="QTextBrowser" name="textBrowser_6">
+        <widget class="QTextBrowser" name="a3">
          <property name="maximumSize">
           <size>
            <width>61</width>
@@ -310,7 +319,7 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QTextBrowser" name="textBrowser_7">
+        <widget class="QTextBrowser" name="s1">
          <property name="maximumSize">
           <size>
            <width>61</width>
@@ -320,7 +329,7 @@
         </widget>
        </item>
        <item row="2" column="2">
-        <widget class="QTextBrowser" name="textBrowser_8">
+        <widget class="QTextBrowser" name="s2">
          <property name="maximumSize">
           <size>
            <width>61</width>
@@ -332,17 +341,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QTableView" name="tableView_2">
-       <property name="maximumSize">
-        <size>
-         <width>201</width>
-         <height>131</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="verticalSpacer_7">
+      <spacer name="verticalSpacer_6">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
@@ -355,7 +354,10 @@
       </spacer>
      </item>
      <item>
-      <spacer name="verticalSpacer_6">
+      <widget class="QTableView" name="infotableView"/>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_7">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>

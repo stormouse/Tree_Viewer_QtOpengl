@@ -10,10 +10,11 @@ NewFrom::NewFrom(QWidget *parent) :
 
     resize(800,600);
 
-        this->image = new QImage();
+    this->image = new QImage();
 
     connect(ui->OpenImageBtn,SIGNAL(clicked()), this, SLOT(on_slotOpenImage_triggered()));
 }
+
 void NewFrom::on_slotOpenImage_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(
@@ -28,24 +29,15 @@ void NewFrom::on_slotOpenImage_triggered()
             ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
              ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-
             QGraphicsScene *scene = new QGraphicsScene;
             QPixmap map = QPixmap::fromImage(*image);
-
-
-
 
             QPixmap sized = map.scaled(
                QSize(ui->graphicsView->width(),
                  ui->graphicsView->height()),
                Qt::KeepAspectRatio);
-
-
              scene->addPixmap(sized);
-
-
             ui->graphicsView->setScene(scene);
-
             ui->graphicsView->show();
         }
     }
