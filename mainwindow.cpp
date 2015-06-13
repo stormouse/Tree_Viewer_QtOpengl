@@ -12,6 +12,8 @@
 #include<QModelIndex>
 #include<QStandardItem>
 #include<DBManager.h>
+#include<newfrom.h>
+#include<QTextCodec>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -51,10 +53,11 @@ MainWindow::MainWindow(QWidget *parent) :
     model->removeColumns(1,2);
     ui->tableView->setModel(model);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);*/
-    QStandardItem* itemQiao = new QStandardItem(tr("乔木类"));
-    QStandardItem* itemGuan = new QStandardItem(tr("灌木类"));
-    QStandardItem* itemTeng = new QStandardItem(tr("藤木类"));
-    QStandardItem* itemPu = new QStandardItem(tr("匍匐类"));
+    QTextCodec*code = QTextCodec::codecForName("GB2312");
+    QStandardItem* itemQiao = new QStandardItem(code->toUnicode("乔木类"));
+    QStandardItem* itemGuan = new QStandardItem(code->toUnicode("灌木类"));
+    QStandardItem* itemTeng = new QStandardItem(code->toUnicode("藤木类"));
+    QStandardItem* itemPu = new QStandardItem(code->toUnicode("匍匐类"));
     model->appendRow(itemQiao);
     model->appendRow(itemGuan);
     model->appendRow(itemTeng);
@@ -285,7 +288,8 @@ void MainWindow::on_action_open_triggered()
 
 void MainWindow::on_action_new_triggered()
 {
-
+    NewFrom *from = new NewFrom();
+    from->show();
 }
 
 void MainWindow::on_action_save_triggered()
