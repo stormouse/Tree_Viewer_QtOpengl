@@ -16,6 +16,9 @@
 #include<QTextCodec>
 #include<QVector>
 #include<QObject>
+#include<QMessageBox>
+#include "LoadDialog.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -441,7 +444,6 @@ void MainWindow::on_pushed()
 
 void MainWindow::on_treeView_doubleClicked(const QModelIndex &index)
 {
-
     DBManager db;
     db.ConnectToDB();
 
@@ -451,9 +453,13 @@ void MainWindow::on_treeView_doubleClicked(const QModelIndex &index)
     QString Modelname = db.FindMnameByTreeName(Treename);
     QString Modelpath = db.FindPatyByName(Treename);
 
-
+	//very slow
+	LoadDialog dialog(this);
+	dialog.show();
 	QString name = ui->openGLWidget->AddTree(TreeInfo(Modelname, Modelpath));
-    ui->openGLWidget->update();
+	dialog.close();
+    
+	ui->openGLWidget->update();
 	ActionNode x;
 	x.operation = ActionNode::ADD;
 	Object* obj = ui->openGLWidget->GetObjectFactory()->FindObjectByName(name);
@@ -473,6 +479,8 @@ void MainWindow::on_new_file(QString imagepath, QString projpath, QString projna
 void MainWindow::on_action_output_triggered()
 {
 	QString path = QFileDialog::getSaveFileName(this, tr("Export"), ".", tr("Image Files(*.jpg)"));
+	
+	ui->openGLWidget->DeselectAll();
 	ui->openGLWidget->SaveImageToFile(path);
 }
 

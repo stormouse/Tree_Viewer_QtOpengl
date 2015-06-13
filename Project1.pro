@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     treeviewwidget.cpp \
     boundingbox.cpp \
     mainwindow.cpp \
-    newfrom.cpp
+    newfrom.cpp \
+    LoadDialog.cpp
 
 HEADERS  += \
     material.h \
@@ -38,11 +39,13 @@ HEADERS  += \
     boundingbox.h \
     mainwindow.h \
     DBManager.h \
-    newfrom.h
+    newfrom.h \
+    LoadDialog.h
 
 FORMS    += mainwindow.ui \
     treeviewwidget.ui \
-    newfrom.ui
+    newfrom.ui \
+    loaddialog.ui
 
 RESOURCES += \
     images.qrc

@@ -11,7 +11,8 @@ TreeViewWidget::TreeViewWidget(QWidget *parent) :
     ui(new Ui::TreeViewWidget)
 {
     ui->setupUi(this);
-    treeCount = 0;
+	this->parent = parent;
+	treeCount = 0;
     img = NULL;
 }
 
@@ -80,12 +81,10 @@ void TreeViewWidget::initializeGL()
     LoadBGImage("bg1.jpg");
 	//LoadBGImage("bg2.jpg");
 
-	DBManager manager;
-	manager.ConnectToDB();
-	qDebug() << manager.FindPathByTreeName("lilac");
-    AddTree(TreeInfo("lilac",manager.FindPathByTreeName("lilac")));
-	AddTree(TreeInfo("lilac", manager.FindPathByTreeName("lilac")), 250, 100);
-	AddTree(TreeInfo("lilac", manager.FindPathByTreeName("lilac")), 500, 100);
+	qDebug() << DBManager::Instance()->FindPathByTreeName("lilac");
+	AddTree(TreeInfo("lilac", DBManager::Instance()->FindPathByTreeName("lilac")));
+	AddTree(TreeInfo("lilac", DBManager::Instance()->FindPathByTreeName("lilac")), 250, 100);
+	AddTree(TreeInfo("lilac", DBManager::Instance()->FindPathByTreeName("lilac")), 500, 100);
 
 	//this->setFocusPolicy(Qt::StrongFocus);
 	//TreeFile projetFile;
@@ -154,8 +153,6 @@ void TreeViewWidget::resizeGL(int width, int height)
 void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 {
 	ActionNode x;
-	DBManager manager;
-	manager.ConnectToDB();
 	switch (e->key())
 	{
 	case Qt::Key_Left:
@@ -164,7 +161,7 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 			x.operation = ActionNode::ALTER;
 			for (int i = 0; i < selectedList.size(); i++)
 			{
-				QString path = manager.FindPathByTreeName(selectedList[i]->GetModelName());
+				QString path = DBManager::Instance()->FindPathByTreeName(selectedList[i]->GetModelName());
 				TreeInfo info(selectedList[i]->GetModelName(), path);
 				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
 			}
@@ -194,7 +191,7 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 			x.operation = ActionNode::ALTER;
 			for (int i = 0; i < selectedList.size(); i++)
 			{
-				QString path = manager.FindPathByTreeName(selectedList[i]->GetModelName());
+				QString path = DBManager::Instance()->FindPathByTreeName(selectedList[i]->GetModelName());
 				TreeInfo info(selectedList[i]->GetModelName(), path);
 				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
 			}
@@ -224,7 +221,7 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 			x.operation = ActionNode::ALTER;
 			for (int i = 0; i < selectedList.size(); i++)
 			{
-				QString path = manager.FindPathByTreeName(selectedList[i]->GetModelName());
+				QString path = DBManager::Instance()->FindPathByTreeName(selectedList[i]->GetModelName());
 				TreeInfo info(selectedList[i]->GetModelName(), path);
 				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
 			}
@@ -254,7 +251,7 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 			x.operation = ActionNode::ALTER;
 			for (int i = 0; i < selectedList.size(); i++)
 			{
-				QString path = manager.FindPathByTreeName(selectedList[i]->GetModelName());
+				QString path = DBManager::Instance()->FindPathByTreeName(selectedList[i]->GetModelName());
 				TreeInfo info(selectedList[i]->GetModelName(), path);
 				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
 			}
@@ -284,7 +281,7 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 			x.operation = ActionNode::ALTER;
 			for (int i = 0; i < selectedList.size(); i++)
 			{
-				QString path = manager.FindPathByTreeName(selectedList[i]->GetModelName());
+				QString path = DBManager::Instance()->FindPathByTreeName(selectedList[i]->GetModelName());
 				TreeInfo info(selectedList[i]->GetModelName(), path);
 				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
 			}
@@ -301,7 +298,7 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 			x.operation = ActionNode::ALTER;
 			for (int i = 0; i < selectedList.size(); i++)
 			{
-				QString path = manager.FindPathByTreeName(selectedList[i]->GetModelName());
+				QString path = DBManager::Instance()->FindPathByTreeName(selectedList[i]->GetModelName());
 				TreeInfo info(selectedList[i]->GetModelName(), path);
 				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
 			}
@@ -324,7 +321,7 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 		x.operation = ActionNode::REMOVE;
         for(int i=0;i<selectedList.size();i++)
         {
-			QString path = manager.FindPathByTreeName(selectedList[i]->GetModelName());
+			QString path = DBManager::Instance()->FindPathByTreeName(selectedList[i]->GetModelName());
 			TreeInfo info(selectedList[i]->GetModelName(), path);
 			x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
             RemoveTree(selectedList[i]->Name());
@@ -344,6 +341,15 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
     update();
 }
 
+void TreeViewWidget::DeselectAll()
+{
+	for (int i = 0; i < selectedList.size(); i++)
+	{
+		selectedList[i]->ToggleSelected(false);
+	}
+	selectedList.clear();
+}
+
 void TreeViewWidget::keyReleaseEvent(QKeyEvent *e)
 {
 	onmove = false;
@@ -352,7 +358,6 @@ void TreeViewWidget::keyReleaseEvent(QKeyEvent *e)
     case Qt::Key_Control:
         groupSelecting = false; break;
     case Qt::Key_Shift:
-		qDebug() << "release";
         shiftdown = false; break;
     }
 }
@@ -365,14 +370,13 @@ void TreeViewWidget::mouseMoveEvent(QMouseEvent *e)
     mousepos[0] = e->x();
     mousepos[1] = e->y();
 
-	DBManager manager;
 	ActionNode x;
 	if (!onmove && (mode == Mode::MOVE || mode == Mode::ROTATE || mode == Mode::ZOOM))
 	{
 		x.operation = ActionNode::ALTER;
 		for (int i = 0; i < selectedList.size(); i++)
 		{
-			QString path = manager.FindPathByTreeName(selectedList[i]->GetModelName());
+			QString path = DBManager::Instance()->FindPathByTreeName(selectedList[i]->GetModelName());
 			TreeInfo info(selectedList[i]->GetModelName(), path);
 			x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
 		}
@@ -564,23 +568,9 @@ void TreeViewWidget::SaveImageToFile(QString filename)
 {
 	int _w = static_cast<int>(ceil(width));
 	int _h = static_cast<int>(ceil(height));
-	while (_w % 4 != 0)_w++;
-	while (_h % 4 != 0)_h++;
 
-	GLubyte *buf = new GLubyte[_w * _h * 4];
+	QPixmap pixmap = QPixmap::grabWidget(this, QRect(0, 0, _w, _h));
+	pixmap.save(filename, "JPG");
 
-	int x = this->mapToParent(this->geometry().topLeft()).x();
-	int y = this->mapToParent(this->geometry().topLeft()).y();
-
-	glReadPixels(x, y+height/2, width, height, GL_BGRA, GL_UNSIGNED_BYTE, buf);
-
-	QImage image(buf, width, height, QImage::Format_ARGB32);
-
-	//flip the image.
-	QMatrix matrix;
-	matrix.scale(1, -1);
-	image = image.transformed(matrix);
-	image.save(filename, "JPG");
-
-	delete buf;
+	//delete buf;
 }

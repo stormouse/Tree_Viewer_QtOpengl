@@ -44,6 +44,7 @@ public:
 	QImage* GetImage(){ return img; }
 	ObjectFactory* GetObjectFactory(){ return &objectFactory; }
     void ClearAllTrees();
+	void DeselectAll();
 
 	void SetMode(Mode x){ mode = x; }
 	Mode GetMode(){ return mode; }
@@ -64,6 +65,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *e);
 private:
 
+	QWidget *parent;
     void fitForBGImage();
 
     double fovy = 60.0;
