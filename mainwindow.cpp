@@ -64,6 +64,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 	thefile = NULL;
+	
+	//set default mode
+	ui->action_move->setIcon(QIcon(":/image/blackmove.png"));
+	ui->action_rotate->setIcon(QIcon(":/image/rotate.png"));
+	ui->action_zoom->setIcon(QIcon(":/image/zoom.png"));
+	ui->openGLWidget->SetMode(Mode::MOVE);
+
+	//set disabled actions
+	ui->action_undo->setEnabled(false);
+	ui->action_redo->setEnabled(false);
+
 	connect(ui->openGLWidget, SIGNAL(Pushed()), this, SLOT(on_pushed()));
 }
 
@@ -283,6 +294,8 @@ void MainWindow::on_action_othersave_triggered()
 void MainWindow::on_action_undo_triggered()
 {
 	ActionNode x = ui->openGLWidget->GetStack()->PopFromUndo();
+	ui->action_redo->setEnabled(true);
+	//to-do
 	switch (x.operation)
 	{
 	case ActionNode::ADD:
@@ -325,7 +338,45 @@ void MainWindow::on_action_undo_triggered()
 
 void MainWindow::on_action_redo_triggered()
 {
-
+	ActionNode x = ui->openGLWidget->GetStack()->PopFromRedo();
+	switch (x.operation)
+	{
+	case ActionNode::REMOVE:
+		for (int i = 0; i < x.count(); i++)
+		{
+			//Object* obj = ui->openGLWidget->GetObjectFactory()->FindObjectByName(x.changedTrees[i].name);
+			ui->openGLWidget->GetObjectFactory()->RemoveObject(x.changedTrees[i].name);
+		}
+		break;
+	case ActionNode::ADD:
+		for (int i = 0; i < x.count(); i++)
+		{
+			Object* obj = new Object();
+			if (obj->Load(TreeInfo(x.changedTrees[i].info)))
+			{
+				obj->setName(x.changedTrees[i].name);
+				obj->SetPosition(x.changedTrees[i].position);
+				obj->SetEulerAngles(x.changedTrees[i].angle);
+				obj->SetScale(x.changedTrees[i].scale);
+				ui->openGLWidget->GetObjectFactory()->AddObject(obj);
+			}
+		}
+		break;
+	case ActionNode::ALTER:
+		for (int i = 0; i < x.count(); i++)
+		{
+			Object* obj = ui->openGLWidget->GetObjectFactory()->FindObjectByName(x.changedTrees[i].name);
+			obj->SetPosition(x.changedTrees[i].position);
+			obj->SetEulerAngles(x.changedTrees[i].angle);
+			obj->SetScale(x.changedTrees[i].scale);
+		}
+		break;
+	}
+	if (ui->openGLWidget->GetStack()->IsRedoEmpty())
+	{
+		ui->action_redo->setEnabled(false);
+	}
+	ui->openGLWidget->update();
 }
 /*void MainWindow::on_tableView_clicked(const QModelIndex &index)
 {
@@ -373,7 +424,11 @@ void MainWindow::on_treeView_doubleClicked(const QModelIndex &index)
     QString Modelpath = db.FindPatyByName(Treename);
 
 
-    ui->openGLWidget->AddTree(TreeInfo(Modelname,Modelpath));
+	QString name = ui->openGLWidget->AddTree(TreeInfo(Modelname, Modelpath));
     ui->openGLWidget->update();
-
+	ActionNode x;
+	x.operation = ActionNode::ADD;
+	Object* obj = ui->openGLWidget->GetObjectFactory()->FindObjectByName(name);
+	x.changedTrees.push_back(TreeNode(name, TreeInfo(Modelname, Modelpath), obj->GetPosition(), obj->GetEulerAngles(), obj->GetScale()));
+	ui->openGLWidget->GetStack()->PushToUndo(x);
 }

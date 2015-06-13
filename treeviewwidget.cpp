@@ -18,7 +18,7 @@ TreeViewWidget::~TreeViewWidget()
     delete ui;
 }
 
-void TreeViewWidget::AddTree(const TreeInfo &info, double x, double y)
+QString TreeViewWidget::AddTree(const TreeInfo &info, double x, double y)
 {
     if(x<0) x = width/2;
     if(y<0) y = height/2;
@@ -29,9 +29,11 @@ void TreeViewWidget::AddTree(const TreeInfo &info, double x, double y)
         obj->setName(tname);
         obj->SetPosition(QVector3D(50*kx*(x - width/2), 50*ky*(y - height/2), -50.0));
         objectFactory.AddObject(obj);
+		return tname;
     }
     else
     {
+		return "";
         // failed to add model;
     }
 }

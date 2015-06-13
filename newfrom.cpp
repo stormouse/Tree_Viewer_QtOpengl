@@ -1,6 +1,7 @@
 #include "newfrom.h"
 #include "ui_newfrom.h"
 #include<QFileDialog>
+#include<QMessageBox>
 NewFrom::NewFrom(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::NewFrom)
@@ -65,4 +66,39 @@ void NewFrom::on_pushButton_3_clicked()
 {
     QString newpath = QFileDialog::getExistingDirectory();
     ui->savePos->setText(newpath);
+}
+
+void NewFrom::on_pushButton_clicked()
+{
+	if (IsStringValid())
+	{
+		emit return_string(ui->select->text(), ui->savePos->text(), ui->proName->text());
+		this->close();
+	}
+	else if (ui->select->text()=="")
+	{
+		QMessageBox::critical(0,"critical message", "请选择项目背景图片！",QMessageBox::Ok , 0);
+	}
+	else if (ui->savePos->text() == "")
+	{
+		QMessageBox::critical(0, "critical message", "请选择项目存储文件夹！", QMessageBox::Ok, 0);
+	}
+	else if (ui->proName->text() == "")
+	{
+		QMessageBox::critical(0, "critical message", "请选择项目名称！", QMessageBox::Ok, 0);
+	}
+}
+
+void NewFrom::on_pushButton_2_clicked()
+{
+	this->close();
+}
+
+bool NewFrom::IsStringValid()
+{
+	if (ui->select->text() != ""&&ui->savePos->text() != ""&&ui->proName->text() != "")
+	{
+		return true;
+	}
+	else return false;
 }

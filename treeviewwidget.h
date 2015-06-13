@@ -26,7 +26,7 @@ public:
     explicit TreeViewWidget(QWidget *parent = 0);
     ~TreeViewWidget();
 
-    void AddTree(const TreeInfo &info, double scrx = -1.0, double scry = -1.0);
+    QString AddTree(const TreeInfo &info, double scrx = -1.0, double scry = -1.0);
     void RemoveTree(const QString &name);
     void SelectTree(const QString &name);
 

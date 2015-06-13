@@ -29,7 +29,7 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>170</x>
+     <x>230</x>
      <y>450</y>
      <width>235</width>
      <height>36</height>
@@ -52,7 +52,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>50</x>
@@ -81,7 +81,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>50</x>
@@ -122,18 +122,16 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_2"/>
+       <widget class="QLineEdit" name="proName"/>
       </item>
      </layout>
     </item>
    </layout>
   </widget>
+  <zorder>layoutWidget</zorder>
   <zorder>graphicsView</zorder>
   <zorder>layoutWidget</zorder>
   <zorder>layoutWidget</zorder>
-  <zorder>label_3</zorder>
-  <zorder>lineEdit_2</zorder>
-  <zorder>label</zorder>
  </widget>
  <resources/>
  <connections/>

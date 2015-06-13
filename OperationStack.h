@@ -63,7 +63,6 @@ public:
 		}
 		ActionNode x = undo.back();
 		undo.pop_back();
-		redo.push_back(x);
 		return x;
 	}
 
@@ -84,7 +83,6 @@ public:
 		}
 		ActionNode x = redo.back();
 		redo.pop_back();
-		undo.pop_back();
 		return x;
 	}
 

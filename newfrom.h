@@ -23,9 +23,16 @@ private slots:
     void on_slotOpenImage_triggered();
     void on_pushButton_3_clicked();
 
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
+
+signals:
+	void return_string(QString, QString, QString);
 private:
     Ui::NewFrom *ui;
     QImage *image;
+	bool IsStringValid();
 };
 
 #endif // NEWFROM_H
