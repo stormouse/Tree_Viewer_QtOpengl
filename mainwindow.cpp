@@ -296,18 +296,24 @@ void MainWindow::on_action_undo_triggered()
 	ActionNode x = ui->openGLWidget->GetStack()->PopFromUndo();
 	ui->action_redo->setEnabled(true);
 	//to-do
+	ActionNode xr;
+
 	switch (x.operation)
 	{
 	case ActionNode::ADD:
+		xr.operation = ActionNode::REMOVE;
 		for (int i = 0; i < x.count(); i++)
 		{
 			//Object* obj = ui->openGLWidget->GetObjectFactory()->FindObjectByName(x.changedTrees[i].name);
+			xr.changedTrees.push_back(x.changedTrees[i]);
 			ui->openGLWidget->GetObjectFactory()->RemoveObject(x.changedTrees[i].name);
 		}
 		break;
 	case ActionNode::REMOVE:
+		xr.operation = ActionNode::ADD;
 		for (int i = 0; i < x.count(); i++)
 		{
+			xr.changedTrees.push_back(x.changedTrees[i]);
 			Object* obj = new Object();
 			if (obj->Load(TreeInfo(x.changedTrees[i].info)))
 			{
@@ -320,15 +326,18 @@ void MainWindow::on_action_undo_triggered()
 		}
 		break;
 	case ActionNode::ALTER:
+		xr.operation = ActionNode::ALTER;
 		for (int i = 0; i < x.count(); i++)
 		{
 			Object* obj = ui->openGLWidget->GetObjectFactory()->FindObjectByName(x.changedTrees[i].name);
+			xr.changedTrees.push_back(TreeNode(x.changedTrees[i].name, x.changedTrees[i].info, obj->GetPosition(), obj->GetEulerAngles(), obj->GetScale()));
 			obj->SetPosition(x.changedTrees[i].position);
 			obj->SetEulerAngles(x.changedTrees[i].angle);
 			obj->SetScale(x.changedTrees[i].scale);
 		}
 		break;
 	}
+	ui->openGLWidget->GetStack()->PushToRedo(xr);
 	if (ui->openGLWidget->GetStack()->IsUndoEmpty())
 	{
 		ui->action_undo->setEnabled(false);
@@ -339,18 +348,25 @@ void MainWindow::on_action_undo_triggered()
 void MainWindow::on_action_redo_triggered()
 {
 	ActionNode x = ui->openGLWidget->GetStack()->PopFromRedo();
+	ui->action_undo->setEnabled(true);
+	//to-do
+	ActionNode xr;
 	switch (x.operation)
 	{
-	case ActionNode::REMOVE:
+	case ActionNode::ADD:
+		xr.operation = ActionNode::REMOVE;
 		for (int i = 0; i < x.count(); i++)
 		{
 			//Object* obj = ui->openGLWidget->GetObjectFactory()->FindObjectByName(x.changedTrees[i].name);
+			xr.changedTrees.push_back(x.changedTrees[i]);
 			ui->openGLWidget->GetObjectFactory()->RemoveObject(x.changedTrees[i].name);
 		}
 		break;
-	case ActionNode::ADD:
+	case ActionNode::REMOVE:
+		xr.operation = ActionNode::ADD;
 		for (int i = 0; i < x.count(); i++)
 		{
+			xr.changedTrees.push_back(x.changedTrees[i]);
 			Object* obj = new Object();
 			if (obj->Load(TreeInfo(x.changedTrees[i].info)))
 			{
@@ -363,15 +379,18 @@ void MainWindow::on_action_redo_triggered()
 		}
 		break;
 	case ActionNode::ALTER:
+		xr.operation = ActionNode::ALTER;
 		for (int i = 0; i < x.count(); i++)
 		{
 			Object* obj = ui->openGLWidget->GetObjectFactory()->FindObjectByName(x.changedTrees[i].name);
+			xr.changedTrees.push_back(TreeNode(x.changedTrees[i].name, x.changedTrees[i].info, obj->GetPosition(), obj->GetEulerAngles(), obj->GetScale()));
 			obj->SetPosition(x.changedTrees[i].position);
 			obj->SetEulerAngles(x.changedTrees[i].angle);
 			obj->SetScale(x.changedTrees[i].scale);
 		}
 		break;
 	}
+	ui->openGLWidget->GetStack()->PushToUndo(xr);
 	if (ui->openGLWidget->GetStack()->IsRedoEmpty())
 	{
 		ui->action_redo->setEnabled(false);
