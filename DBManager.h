@@ -42,7 +42,10 @@ public:
 		}
 		else return "";
 	}
-	
+	~DBManager()
+	{
+		db.close();
+	}
 };
 
 #endif
