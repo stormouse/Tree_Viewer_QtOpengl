@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     treeinfo.cpp \
     treeviewwidget.cpp \
     boundingbox.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    newfrom.cpp
 
 HEADERS  += \
     material.h \
@@ -36,10 +37,12 @@ HEADERS  += \
     treeviewwidget.h \
     boundingbox.h \
     mainwindow.h \
-    DBManager.h
+    DBManager.h \
+    newfrom.h
 
 FORMS    += mainwindow.ui \
-    treeviewwidget.ui
+    treeviewwidget.ui \
+    newfrom.ui
 
 RESOURCES += \
     images.qrc
