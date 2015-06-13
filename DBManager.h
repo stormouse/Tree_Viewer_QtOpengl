@@ -31,10 +31,11 @@ public:
 		//}
 		//else return true;
 	}
+    //modelname
 	QString FindPathByTreeName(QString name)
 	{
 		db = QSqlDatabase::database("test", false);
-		QString sqlcmd = "Select Mpath From Model Where Mname=\'"+name+"\'";
+        QString sqlcmd = "Select Mpath From Model Where Mname=\'"+name+"\'";
 		QSqlQuery query = db.exec(sqlcmd);
 		if (query.next())
 		{
@@ -42,6 +43,30 @@ public:
 		}
 		else return "";
 	}
+    //treename
+    QString FindPatyByName(QString name)
+    {
+        db = QSqlDatabase::database("test", false);
+        QString sqlcmd = "Select Mpath From Model Where Tname=\'"+name+"\'";
+        QSqlQuery query = db.exec(sqlcmd);
+        if (query.next())
+        {
+            return query.value(0).toString();
+        }
+        else return "";
+    }
+    //treename - > modelname
+    QString FindMnameByTreeName(QString name)
+    {
+        db = QSqlDatabase::database("test", false);
+        QString sqlcmd = "Select Mname From Model Where Tname=\'"+name+"\'";
+        QSqlQuery query = db.exec(sqlcmd);
+        if (query.next())
+        {
+            return query.value(0).toString();
+        }
+        else return "";
+    }
 	~DBManager()
 	{
 		db.close();

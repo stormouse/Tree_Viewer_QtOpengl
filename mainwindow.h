@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSqlTableModel>
 #include "TreeFile.h"
+#include "DBManager.h"
 namespace Ui {
 class MainWindow;
 }
@@ -19,6 +20,7 @@ public:
     void keyPressEvent(QKeyEvent  *event);
     //QSqlTableModel *model2;
     QStandardItemModel *model;
+
     ~MainWindow();
     void resizeEvent(QResizeEvent *event);
 
@@ -61,6 +63,8 @@ private slots:
     void on_treeView_clicked(const QModelIndex &index);
 
 	void on_pushed();
+
+    void on_treeView_doubleClicked(const QModelIndex &index);
 
 private:
     Ui::MainWindow *ui;

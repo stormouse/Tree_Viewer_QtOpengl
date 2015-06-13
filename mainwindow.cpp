@@ -22,37 +22,14 @@ MainWindow::MainWindow(QWidget *parent) :
     DBManager k;
     k.ConnectToDB();
     QSqlDatabase db = QSqlDatabase::database("test", false);
-    /*db = QSqlDatabase::addDatabase("QODBC", "test");
-    db.setDatabaseName("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};FIL={MS Access};DBQ=G:\\TreesModel.mdb");
-    if(!db.open()){
-        qDebug() << "Error:";
-    }*/
-    /*model = new QSqlTableModel(0,db);
-    model->setTable("tree");
-    model->setSort(0, Qt::AscendingOrder);
-    model->select();
-    model->removeColumns(1,2);
 
-    ui->tableView->setModel(model);
-    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);*/
     QSqlTableModel *modelsupply  = new QSqlTableModel(0,db);
     modelsupply->setTable("Trees");
     modelsupply->select();
 
     model = new QStandardItemModel(ui->treeView);
     model->setHorizontalHeaderLabels(QStringList()<<QStringLiteral("Name"));
-    /*QStandardItem* item1 = new QStandardItem(tr("乔木"));
-    QStandardItem* item2 = new QStandardItem(tr("灌木"));
-    model->setHorizontalHeaderItem(0,item1);
-    model->setHorizontalHeaderItem(1,item2);
-    model->horizontalHeaderItem(0)->setSizeHint(QSize());
-*/    /*model = new QSqlTableModel(0,db);
-    model->setTable("tree");
-    model->setSort(0, Qt::AscendingOrder);
-    model->select();
-    model->removeColumns(1,2);
-    ui->tableView->setModel(model);
-    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);*/
+
     QTextCodec*code = QTextCodec::codecForName("GB2312");
     QStandardItem* itemQiao = new QStandardItem(code->toUnicode("乔木类"));
     QStandardItem* itemGuan = new QStandardItem(code->toUnicode("灌木类"));
@@ -82,7 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
             //int age = record.value("age").toInt();
         }
     }
-
+    ui->treeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->treeView->setModel(model);
 
 
@@ -370,15 +347,33 @@ void MainWindow::on_action_redo_triggered()
 void MainWindow::on_treeView_clicked(const QModelIndex &index)
 {
 
-    QModelIndex row = ui->treeView->currentIndex();
+    /*QModelIndex row = ui->treeView->currentIndex();
     row = row.sibling(row.row(),0);
     QString t = ui->treeView->model()->itemData(row).values()[0].toString();
     //QSqlQueryModel *model2 = new QSqlQueryModel(ui->treeView);
-    ui->treename->setText(t);
+    ui->treename->setText(t);*/
 
 }
 
 void MainWindow::on_pushed()
 {
 	ui->action_undo->setEnabled(true);
+}
+
+void MainWindow::on_treeView_doubleClicked(const QModelIndex &index)
+{
+
+    DBManager db;
+    db.ConnectToDB();
+
+    QModelIndex row = ui->treeView->currentIndex();
+    row = row.sibling(row.row(),0);
+    QString Treename = ui->treeView->model()->itemData(row).values()[0].toString();
+    QString Modelname = db.FindMnameByTreeName(Treename);
+    QString Modelpath = db.FindPatyByName(Treename);
+
+
+    ui->openGLWidget->AddTree(TreeInfo(Modelname,Modelpath));
+    ui->openGLWidget->update();
+
 }

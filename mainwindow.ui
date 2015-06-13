@@ -54,10 +54,7 @@
     <property name="title">
      <string>  编辑  </string>
     </property>
-    <addaction name="action_copy"/>
-    <addaction name="action_cut"/>
     <addaction name="action_undo"/>
-    <addaction name="action_paste"/>
     <addaction name="action_redo"/>
     <addaction name="action_move"/>
     <addaction name="action_rotate"/>
@@ -122,6 +119,9 @@
      <height>524287</height>
     </size>
    </property>
+   <property name="features">
+    <set>QDockWidget::NoDockWidgetFeatures</set>
+   </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
@@ -148,7 +148,11 @@
       </layout>
      </item>
      <item>
-      <widget class="QTreeView" name="treeView"/>
+      <widget class="QTreeView" name="treeView">
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -168,6 +172,9 @@
      <width>524287</width>
      <height>192</height>
     </size>
+   </property>
+   <property name="features">
+    <set>QDockWidget::NoDockWidgetFeatures</set>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
@@ -436,6 +443,9 @@
    <property name="text">
     <string>新建</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
   </action>
   <action name="action_open">
    <property name="icon">
@@ -476,27 +486,6 @@
    </property>
    <property name="text">
     <string>退出</string>
-   </property>
-  </action>
-  <action name="action_copy">
-   <property name="text">
-    <string>复制</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+C</string>
-   </property>
-  </action>
-  <action name="action_paste">
-   <property name="text">
-    <string>粘贴</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+V</string>
-   </property>
-  </action>
-  <action name="action_cut">
-   <property name="text">
-    <string>剪切</string>
    </property>
   </action>
   <action name="action_undo">
@@ -543,7 +532,7 @@
   </action>
   <action name="action_move">
    <property name="checkable">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="checked">
     <bool>false</bool>
@@ -555,6 +544,9 @@
    <property name="text">
     <string>平移</string>
    </property>
+   <property name="shortcut">
+    <string>Z</string>
+   </property>
   </action>
   <action name="action_rotate">
    <property name="icon">
@@ -564,6 +556,9 @@
    <property name="text">
     <string>旋转</string>
    </property>
+   <property name="shortcut">
+    <string>X</string>
+   </property>
   </action>
   <action name="action_zoom">
    <property name="icon">
@@ -572,6 +567,9 @@
    </property>
    <property name="text">
     <string>缩放</string>
+   </property>
+   <property name="shortcut">
+    <string>C</string>
    </property>
   </action>
   <action name="action_othersave">
