@@ -11,18 +11,20 @@
 #include<QObject>
 #include<QModelIndex>
 #include<QStandardItem>
+#include<DBManager.h>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    DBManager k;
+    k.ConnectToDB();
     QSqlDatabase db = QSqlDatabase::database("test", false);
-    db = QSqlDatabase::addDatabase("QODBC", "test");
+    /*db = QSqlDatabase::addDatabase("QODBC", "test");
     db.setDatabaseName("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};FIL={MS Access};DBQ=G:\\TreesModel.mdb");
     if(!db.open()){
         qDebug() << "Error:";
-    }
+    }*/
     /*model = new QSqlTableModel(0,db);
     model->setTable("tree");
     model->setSort(0, Qt::AscendingOrder);

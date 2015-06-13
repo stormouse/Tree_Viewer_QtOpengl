@@ -35,7 +35,8 @@ HEADERS  += \
     treeinfo.h \
     treeviewwidget.h \
     boundingbox.h \
-    mainwindow.h
+    mainwindow.h \
+    DBManager.h
 
 FORMS    += mainwindow.ui \
     treeviewwidget.ui
