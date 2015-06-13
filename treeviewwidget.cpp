@@ -164,6 +164,7 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
 			}
 			thestack.PushToUndo(x);
+			emit Pushed();
 			onmove = true;
 		}
 		if (mode == Mode::MOVE)
@@ -193,6 +194,7 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
 			}
 			thestack.PushToUndo(x);
+			emit Pushed();
 			onmove = true;
 		}
 		if (mode == Mode::MOVE)
@@ -222,6 +224,7 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
 			}
 			thestack.PushToUndo(x);
+			emit Pushed();
 			onmove = true;
 		}
 		if (mode == Mode::MOVE)
@@ -251,6 +254,7 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
 			}
 			thestack.PushToUndo(x);
+			emit Pushed();
 			onmove = true;
 		}
 		if (mode == Mode::MOVE)
@@ -280,6 +284,7 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
 			}
 			thestack.PushToUndo(x);
+			emit Pushed();
 			onmove = true;
 		}
 		for (int i = 0; i < selectedList.size(); i++)
@@ -296,6 +301,7 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 				x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
 			}
 			thestack.PushToUndo(x);
+			emit Pushed();
 			onmove = true;
 		}
 		for (int i = 0; i < selectedList.size(); i++)
@@ -319,6 +325,7 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
             RemoveTree(selectedList[i]->Name());
         }
 		thestack.PushToUndo(x);
+		emit Pushed();
         selectedList.clear();
         break;
 
@@ -334,13 +341,9 @@ void TreeViewWidget::keyPressEvent(QKeyEvent *e)
 
 void TreeViewWidget::keyReleaseEvent(QKeyEvent *e)
 {
-	
+	onmove = false;
     switch(e->key())
     {
-	case Qt::Key_D:
-		qDebug() << "rele";
-		//onmove = false;
-		break;
     case Qt::Key_Control:
         groupSelecting = false; break;
     case Qt::Key_Shift:
@@ -357,6 +360,21 @@ void TreeViewWidget::mouseMoveEvent(QMouseEvent *e)
     mousepos[0] = e->x();
     mousepos[1] = e->y();
 
+	DBManager manager;
+	ActionNode x;
+	if (!onmove && (mode == Mode::MOVE || mode == Mode::ROTATE || mode == Mode::ZOOM))
+	{
+		x.operation = ActionNode::ALTER;
+		for (int i = 0; i < selectedList.size(); i++)
+		{
+			QString path = manager.FindPathByTreeName(selectedList[i]->GetModelName());
+			TreeInfo info(selectedList[i]->GetModelName(), path);
+			x.changedTrees.push_back(TreeNode(selectedList[i]->GetName(), info, selectedList[i]->GetPosition(), selectedList[i]->GetEulerAngles(), selectedList[i]->GetScale()));
+		}
+		thestack.PushToUndo(x);
+		emit Pushed();
+		onmove = true;
+	}
     switch(mode)
     {
     case Mode::MOVE:
@@ -399,6 +417,7 @@ void TreeViewWidget::mouseMoveEvent(QMouseEvent *e)
 void TreeViewWidget::mouseReleaseEvent(QMouseEvent *e)
 {
     mousedown = false;
+	onmove = false;
 }
 
 void TreeViewWidget::ClearAllTrees()

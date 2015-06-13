@@ -91,6 +91,9 @@ private:
 	Mode mode;
     bool shiftdown = false;
 	bool onmove = false;
+
+signals:
+	void Pushed();
 };
 
 #endif // TREEVIEWWIDGET_H

@@ -87,6 +87,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 	thefile = NULL;
+	connect(ui->openGLWidget, SIGNAL(Pushed()), this, SLOT(on_pushed()));
 }
 
 void MainWindow::keyPressEvent(QKeyEvent  *event)
@@ -342,6 +343,7 @@ void MainWindow::on_action_undo_triggered()
 	{
 		ui->action_undo->setEnabled(false);
 	}
+	ui->openGLWidget->update();
 }
 
 void MainWindow::on_action_redo_triggered()
@@ -374,4 +376,9 @@ void MainWindow::on_treeView_clicked(const QModelIndex &index)
     //QSqlQueryModel *model2 = new QSqlQueryModel(ui->treeView);
     ui->treename->setText(t);
 
+}
+
+void MainWindow::on_pushed()
+{
+	ui->action_undo->setEnabled(true);
 }

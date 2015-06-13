@@ -63,3 +63,5 @@ Project1.sdf
 *.mdb
 *.png
 *.mtl
+debug/moc_newfrom.cpp
+GeneratedFiles/ui_newfrom.h
