@@ -10,7 +10,6 @@
 #include"treeviewwidget.h"
 #include<QObject>
 #include<QModelIndex>
-#include<QTextCodec>
 #include<QStandardItem>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -18,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    db = QSqlDatabase::database("test", false);
+    QSqlDatabase db = QSqlDatabase::database("test", false);
     db = QSqlDatabase::addDatabase("QODBC", "test");
     db.setDatabaseName("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};FIL={MS Access};DBQ=G:\\TreesModel.mdb");
     if(!db.open()){
@@ -29,9 +28,10 @@ MainWindow::MainWindow(QWidget *parent) :
     model->setSort(0, Qt::AscendingOrder);
     model->select();
     model->removeColumns(1,2);
+
     ui->tableView->setModel(model);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);*/
-    modelsupply  = new QSqlTableModel(0,db);
+    QSqlTableModel *modelsupply  = new QSqlTableModel(0,db);
     modelsupply->setTable("Trees");
     modelsupply->select();
 
@@ -49,10 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
     model->removeColumns(1,2);
     ui->tableView->setModel(model);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);*/
-    //QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-    //QTextCodec::setCodecForCStrings(QTextCodec::codecForName("GB2312"));
     QStandardItem* itemQiao = new QStandardItem(tr("乔木类"));
-    //qDebug() << tr("乔木类");
     QStandardItem* itemGuan = new QStandardItem(tr("灌木类"));
     QStandardItem* itemTeng = new QStandardItem(tr("藤木类"));
     QStandardItem* itemPu = new QStandardItem(tr("匍匐类"));
@@ -60,7 +57,6 @@ MainWindow::MainWindow(QWidget *parent) :
     model->appendRow(itemGuan);
     model->appendRow(itemTeng);
     model->appendRow(itemPu);
-
     if (modelsupply->select()) {
         for (int i = 0; i < modelsupply->rowCount(); ++i) {
             QSqlRecord record = modelsupply->record(i);
@@ -71,25 +67,20 @@ MainWindow::MainWindow(QWidget *parent) :
              QStandardItem* itemName = new QStandardItem(record.value("Tname").toString());
              itemQiao->appendRow(itemName);
             }
-            else if (kind=="arbuscle")
+            else
             {
                 QStandardItem* itemName = new QStandardItem(record.value("Tname").toString());
                 itemGuan->appendRow(itemName);
             }
-            else if(kind=="rattan")
-            {
-                QStandardItem* itemName = new QStandardItem(record.value("Tname").toString());
-                itemTeng->appendRow(itemName);
-            }
-            else
-            {
-                QStandardItem* itemName = new QStandardItem(record.value("Tname").toString());
-                itemPu->appendRow(itemName);
-            }
+
+
+            //int age = record.value("age").toInt();
         }
     }
 
     ui->treeView->setModel(model);
+
+
 	thefile = NULL;
 }
 
@@ -189,7 +180,6 @@ void MainWindow::queryDB()
 }
 MainWindow::~MainWindow()
 {
-    db.close();
     delete ui;
 }
 
@@ -369,53 +359,13 @@ void MainWindow::on_action_redo_triggered()
 
 
 }*/
-/*void MainWindow::on_treeView_clicked(const QModelIndex &index)
+void MainWindow::on_treeView_clicked(const QModelIndex &index)
 {
 
     QModelIndex row = ui->treeView->currentIndex();
     row = row.sibling(row.row(),0);
     QString t = ui->treeView->model()->itemData(row).values()[0].toString();
     //QSqlQueryModel *model2 = new QSqlQueryModel(ui->treeView);
-    ui->treename->setText(t);*/
-    /*QStandardItemModel *   model3   =   static_cast < QStandardItemModel *>( ui -> treeView -> model ());
-    QModelIndex   currentIndex   =   ui -> treeView -> currentIndex ();
-    QStandardItem *   currentItem   =   model -> itemFromIndex ( currentIndex );
+    ui->treename->setText(t);
 
-   ui->treename->setText(index.data().toString());
-
-}*/
-
-void MainWindow::on_treeView_doubleClicked(const QModelIndex &index)
-{
-
-}
-/*void MainWindow::on_pushButton_clicked()
-{
-    QString home = ui->lineEdit->text();
-    if(home == "")
-    {
-        model->setTable("tree");
-        model->removeColumns(1,2);
-        model->select();
-    }
-    else
-    {
-        model->setFilter(QObject::tr("home = '%1'").arg(home));//根据姓名进行筛选
-        model->select();
-    }
-}*/
-void MainWindow::on_pushButton_clicked()
-{
-   /*QString home = ui->lineEdit->text();
-    if(home == "")
-    {
-        model->setTable("tree");
-        model->removeColumns(1,2);
-        model->select();
-    }
-    else
-    {
-        model->setFilter(QObject::tr("home = '%1'").arg(home));//根据姓名进行筛选
-        model->select();
-    }*/
 }
