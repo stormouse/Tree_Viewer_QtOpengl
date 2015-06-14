@@ -26,7 +26,10 @@ public:
 		}
 		return manager;
 	}
-
+	static void SetManagerToNull()
+	{
+		manager = NULL;
+	}
 	bool ConnectToDB()
 	{
 		db = QSqlDatabase::database("test", false);

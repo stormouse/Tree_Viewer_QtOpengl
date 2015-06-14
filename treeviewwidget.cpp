@@ -78,13 +78,13 @@ void TreeViewWidget::initializeGL()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    LoadBGImage("bg1.jpg");
+    //LoadBGImage("bg1.jpg");
 	//LoadBGImage("bg2.jpg");
 
-	qDebug() << DBManager::Instance()->FindPathByTreeName("lilac");
-	AddTree(TreeInfo("lilac", DBManager::Instance()->FindPathByTreeName("lilac")));
-	AddTree(TreeInfo("lilac", DBManager::Instance()->FindPathByTreeName("lilac")), 250, 100);
-	AddTree(TreeInfo("lilac", DBManager::Instance()->FindPathByTreeName("lilac")), 500, 100);
+	//qDebug() << DBManager::Instance()->FindPathByTreeName("lilac");
+	//AddTree(TreeInfo("lilac", DBManager::Instance()->FindPathByTreeName("lilac")));
+	//AddTree(TreeInfo("lilac", DBManager::Instance()->FindPathByTreeName("lilac")), 250, 100);
+	//AddTree(TreeInfo("lilac", DBManager::Instance()->FindPathByTreeName("lilac")), 500, 100);
 
 	//this->setFocusPolicy(Qt::StrongFocus);
 	//TreeFile projetFile;

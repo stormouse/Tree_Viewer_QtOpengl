@@ -18,11 +18,14 @@
 #include<QObject>
 #include<QMessageBox>
 #include "LoadDialog.h"
+#include <QThread>
+#include "LoadThread.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+	DBManager::SetManagerToNull();
     ui->setupUi(this);
     DBManager k;
     k.ConnectToDB();
@@ -277,7 +280,10 @@ void MainWindow::on_action_open_triggered()
 	QString path = QFileDialog::getOpenFileName(this, tr("Open"), ".", tr("Project Files(*.tip)"));
 	ui->openGLWidget->ClearAllTrees();
 	thefile.SetPath(path);
+	LoadDialog d;
+	d.show();
 	thefile.ReadXMLFile(ui->openGLWidget->GetObjectFactory(), ui->openGLWidget);
+	d.hide();
 }
 
 void MainWindow::on_action_new_triggered()
@@ -444,22 +450,22 @@ void MainWindow::on_pushed()
 
 void MainWindow::on_treeView_doubleClicked(const QModelIndex &index)
 {
-    DBManager db;
-    db.ConnectToDB();
+    //DBManager db;
+    //db.ConnectToDB();
 
     QModelIndex row = ui->treeView->currentIndex();
     row = row.sibling(row.row(),0);
     QString Treename = ui->treeView->model()->itemData(row).values()[0].toString();
-    QString Modelname = db.FindMnameByTreeName(Treename);
-    QString Modelpath = db.FindPatyByName(Treename);
+    QString Modelname = DBManager::Instance()->FindMnameByTreeName(Treename);
+	QString Modelpath = DBManager::Instance()->FindPatyByName(Treename);
 
 	//very slow
-	LoadDialog dialog(this);
-	dialog.show();
+	LoadDialog d;
+	d.show();
 	QString name = ui->openGLWidget->AddTree(TreeInfo(Modelname, Modelpath));
-	dialog.close();
-    
-	ui->openGLWidget->update();
+	d.hide();
+
+	ui->openGLWidget->update(); 
 	ActionNode x;
 	x.operation = ActionNode::ADD;
 	Object* obj = ui->openGLWidget->GetObjectFactory()->FindObjectByName(name);
@@ -473,7 +479,7 @@ void MainWindow::on_new_file(QString imagepath, QString projpath, QString projna
 	thefile.SetImagePath(imagepath);
 	thefile.SetPath(projpath + "\\" + projname + ".tip");
 	this->projname = projname;
-	this->setWindowTitle(code->toUnicode("项目 - ")+projname);
+	//this->setWindowTitle(code->toUnicode("项目 - ")+projname);
 	ui->openGLWidget->LoadBGImage(imagepath);
 }
 void MainWindow::on_action_output_triggered()
